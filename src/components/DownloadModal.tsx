@@ -167,20 +167,20 @@ export const DownloadModal: React.FC<DownloadModalProps> = ({
                     </div>
                     <div>
                       <div className="font-black text-stone-950 text-base flex items-center gap-2">
-                        <span>Windows Desktop EXE (.exe)</span>
+                        <span>Windows App (.exe)</span>
                         <span className="px-2 py-0.5 bg-emerald-400 border border-black rounded-md text-[10px] font-black text-stone-950">
-                          True Floating Circle
+                          ~5 MB Ultra-Light
                         </span>
                       </div>
                       <div className="text-xs text-stone-800 font-bold">
-                        Borderless circular widget that stays on top of YouTube & Brave
+                        Native Tauri Engine • Uses ~20MB RAM • Instant Launch
                       </div>
                     </div>
                   </div>
                 </div>
 
                 <p className="text-xs text-stone-900 leading-relaxed font-medium">
-                  The native Windows package runs as a standalone, transparent floating Panda circle on your desktop. It floats permanently on top of all windows without title bars or address boxes.
+                  Built with Tauri for ultra-lightweight performance. Opens as the full 3-column study studio or pop-out floating circle that stays permanently on top of all windows without title bars.
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-2">
@@ -190,7 +190,7 @@ export const DownloadModal: React.FC<DownloadModalProps> = ({
                     className="flex-1 flex items-center justify-center gap-2 py-3 bg-stone-950 hover:bg-stone-800 text-white font-black text-sm border-2 border-black rounded-xl shadow-[3px_3px_0px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 transition-all text-center cursor-pointer"
                   >
                     <Download className="w-4 h-4 stroke-[3]" />
-                    <span>Download goPanda (.exe)</span>
+                    <span>Download Windows Installer (~5MB .exe)</span>
                   </a>
                 </div>
               </div>

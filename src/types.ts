@@ -47,11 +47,12 @@ export type PandaMood = 'focus' | 'break' | 'sleeping' | 'happy' | 'celebrating'
 
 export interface ElectronAPI {
   isElectron: boolean;
-  switchViewMode: (mode: 'mini' | 'full') => void;
+  switchViewMode: (mode: 'full' | 'widget' | 'mini') => void;
   toggleViewMode: () => void;
+  toggleFullScreen: () => void;
   minimizeApp: () => void;
   closeApp: () => void;
-  onModeChanged: (callback: (mode: 'mini' | 'full') => void) => void;
+  onModeChanged: (callback: (mode: 'full' | 'widget' | 'mini') => void) => void;
 }
 
 declare global {

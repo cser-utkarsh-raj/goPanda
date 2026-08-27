@@ -9,6 +9,8 @@ import {
   Settings,
   Minimize2,
   Maximize2,
+  Maximize,
+  Minimize,
   ListTodo,
   StickyNote as StickyNoteIcon,
   Timer as TimerIcon,
@@ -37,6 +39,12 @@ import { SettingsModal } from './components/SettingsModal';
 import { DownloadModal } from './components/DownloadModal';
 import { playBambooClick, playChime, playTaskCheer } from './utils/audio';
 import { formatTime } from './utils/time';
+import {
+  desktopSwitchViewMode,
+  desktopToggleFullScreen,
+  isDesktopApp,
+  onDesktopModeChanged,
+} from './utils/desktopBridge';
 
 const DEFAULT_SETTINGS: TimerSettings = {
   workDuration: 25,
@@ -153,7 +161,8 @@ export default function App() {
   const [stopwatchElapsedSeconds, setStopwatchElapsedSeconds] = useState(0);
 
   // UI view state
-  const [viewMode, setViewMode] = useState<'full' | 'mini' | 'zen'>('full');
+  const [viewMode, setViewMode] = useState<'full' | 'mini' | 'zen' | 'widget'>('full');
+  const [isFullScreen, setIsFullScreen] = useState(false);
   const [mobileTab, setMobileTab] = useState<'timer' | 'tasks' | 'notes'>('timer');
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isDownloadModalOpen, setIsDownloadModalOpen] = useState(false);
@@ -455,10 +464,31 @@ export default function App() {
 
   const handleToggleFloatingWidget = () => {
     if (settings.soundEnabled) playBambooClick(0.2);
-    setShowFloatingWidget((prev) => !prev);
-    if (!showFloatingWidget) {
-      setCelebrationToast('Floating Panda Widget activated! 🐼 Drag it anywhere');
-      setTimeout(() => setCelebrationToast(null), 3500);
+    if (isDesktopApp()) {
+      desktopSwitchViewMode('widget');
+      setViewMode('widget');
+    } else {
+      setShowFloatingWidget((prev) => !prev);
+      if (!showFloatingWidget) {
+        setCelebrationToast('Floating Panda Widget active! 🐼 Drag it anywhere');
+        setTimeout(() => setCelebrationToast(null), 3500);
+      }
+    }
+  };
+
+  const handleToggleFullScreen = () => {
+    if (settings.soundEnabled) playBambooClick(0.2);
+    if (isDesktopApp()) {
+      desktopToggleFullScreen();
+      setIsFullScreen((prev) => !prev);
+    } else {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+        setIsFullScreen(true);
+      } else {
+        document.exitFullscreen().catch(() => {});
+        setIsFullScreen(false);
+      }
     }
   };
 
@@ -466,23 +496,54 @@ export default function App() {
     if (settings.soundEnabled) playBambooClick(0.2);
     const nextMode = viewMode === 'mini' ? 'full' : 'mini';
     setViewMode(nextMode);
-    if (typeof window !== 'undefined' && window.electronAPI) {
-      window.electronAPI.switchViewMode(nextMode);
+    if (isDesktopApp()) {
+      desktopSwitchViewMode(nextMode === 'mini' ? 'widget' : 'full');
     }
   };
 
   useEffect(() => {
-    if (typeof window !== 'undefined' && window.electronAPI) {
-      window.electronAPI.onModeChanged((mode) => {
-        setViewMode(mode);
-      });
-    }
+    let unlisten: (() => void) | undefined;
+    onDesktopModeChanged((mode) => {
+      setViewMode(mode);
+    }).then((cleanup) => {
+      unlisten = cleanup;
+    });
+
+    return () => {
+      if (unlisten) unlisten();
+    };
   }, []);
+
+  // Dedicated clean floating widget window for Desktop overlay & popout
+  if (viewMode === 'widget') {
+    return (
+      <div className="w-screen h-screen flex items-center justify-center bg-transparent overflow-hidden select-none p-0 m-0 fixed inset-0">
+        <MiniWidget
+          mode={timerMode}
+          phase={phase}
+          remainingSeconds={remainingSeconds}
+          totalDurationSeconds={totalDurationSeconds}
+          stopwatchElapsedSeconds={stopwatchElapsedSeconds}
+          isRunning={isRunning}
+          activeTask={activeTask}
+          mood={getPandaMood()}
+          soundEnabled={settings.soundEnabled}
+          onTogglePlayPause={handleTogglePlayPause}
+          onSkipPhase={handleNextPhase}
+          onExpand={() => {
+            setViewMode('full');
+            desktopSwitchViewMode('full');
+          }}
+          bubbleNotification={customSpeech}
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-between p-3 sm:p-5 md:p-6" id="pomo-panda-app">
       {/* Top Navigation Header */}
-      <header className="w-full max-w-7xl flex items-center justify-between bg-white px-5 py-3 rounded-[24px] border-2 border-black shadow-[4px_4px_0px_0px_#000] mb-4">
+      <header className="w-full max-w-7xl flex items-center justify-between bg-white px-4 sm:px-5 py-3 rounded-[24px] border-2 border-black shadow-[4px_4px_0px_0px_#000] mb-4">
         {/* Brand Logo & Name */}
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-2xl bg-white border-2 border-black flex items-center justify-center shadow-[2px_2px_0px_0px_#000]">
@@ -510,16 +571,36 @@ export default function App() {
               if (settings.soundEnabled) playBambooClick(0.2);
             }}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-black border-2 border-black bg-emerald-400 hover:bg-emerald-500 text-stone-950 transition-all shadow-[2px_2px_0px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"
-            title="Install goPanda on Desktop or Mobile"
+            title="Install goPanda on Desktop (.exe) or Mobile"
           >
             <Download className="w-3.5 h-3.5 stroke-[2.5]" />
-            <span className="hidden sm:inline">Install App</span>
+            <span className="hidden sm:inline">Install Desktop .EXE</span>
+          </button>
+
+          {/* Pop-Out Floating Widget Button */}
+          <button
+            id="btn-toggle-floating-widget"
+            onClick={handleToggleFloatingWidget}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-black border-2 border-black bg-[#FEF08A] hover:bg-amber-300 text-stone-950 transition-all shadow-[2px_2px_0px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"
+            title="Pop-out borderless circular floating Panda widget over all apps"
+          >
+            <PandaLogo size={14} />
+            <span className="hidden md:inline">Pop Out Circle Widget</span>
+          </button>
+
+          {/* Full Screen Toggle */}
+          <button
+            onClick={handleToggleFullScreen}
+            className="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 text-xs text-stone-950 font-bold bg-white hover:bg-stone-100 rounded-xl border-2 border-black shadow-[2px_2px_0px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 transition-all"
+            title="Toggle Fullscreen Mode"
+          >
+            {isFullScreen ? <Minimize className="w-3.5 h-3.5 stroke-[2.5]" /> : <Maximize className="w-3.5 h-3.5 stroke-[2.5]" />}
           </button>
 
           {/* Reset All Sample Data */}
           <button
             onClick={handleResetDefaults}
-            className="hidden md:flex items-center gap-1.5 px-3 py-1.5 text-xs text-stone-900 font-bold hover:bg-stone-100 rounded-xl border border-stone-300 transition-colors"
+            className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 text-xs text-stone-900 font-bold hover:bg-stone-100 rounded-xl border border-stone-300 transition-colors"
             title="Reset to 3-hour sample session"
           >
             <RefreshCw className="w-3.5 h-3.5" />
@@ -530,13 +611,13 @@ export default function App() {
           <button
             id="btn-toggle-view-mode"
             onClick={handleToggleViewMode}
-            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-black border-2 border-black bg-white hover:bg-stone-100 text-stone-950 transition-all shadow-[2px_2px_0px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-black border-2 border-black bg-white hover:bg-stone-100 text-stone-950 transition-all shadow-[2px_2px_0px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"
             title="Toggle between Full 3-Column Studio and Compact Single-Card Mode"
           >
             {viewMode === 'mini' ? (
               <>
                 <Maximize2 className="w-3.5 h-3.5 stroke-[2.5]" />
-                <span className="hidden sm:inline">Full Workspace</span>
+                <span className="hidden sm:inline">Full Studio</span>
               </>
             ) : (
               <>
@@ -544,21 +625,6 @@ export default function App() {
                 <span className="hidden sm:inline">Compact Focus</span>
               </>
             )}
-          </button>
-
-          {/* Toggle Floating Panda Circle Widget */}
-          <button
-            id="btn-toggle-floating-widget"
-            onClick={handleToggleFloatingWidget}
-            className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-black border-2 border-black transition-all shadow-[2px_2px_0px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none ${
-              showFloatingWidget
-                ? 'bg-emerald-400 text-stone-950'
-                : 'bg-stone-200 text-stone-700'
-            }`}
-            title="Toggle Draggable Floating Circular Panda Widget"
-          >
-            <PandaLogo size={14} />
-            <span className="hidden sm:inline">{showFloatingWidget ? 'Widget Active' : 'Show Widget'}</span>
           </button>
 
           {/* Settings Modal Toggle */}

@@ -13,6 +13,8 @@
     "preview": "vite preview",
     "clean": "rm -rf dist server.js dist-electron",
     "lint": "tsc --noEmit",
+    "tauri": "tauri",
+    "tauri:build": "npm run build && tauri build",
     "electron": "electron .",
     "electron:build": "npm run build && electron-builder --win --x64 -p never"
   },
@@ -30,27 +32,33 @@
     ],
     "win": {
       "target": "nsis",
+      "icon": "build/icon.png",
       "artifactName": "goPanda-Setup.exe"
     },
+    "compression": "maximum",
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
-      "shortcutName": "goPanda"
+      "shortcutName": "goPanda",
+      "installerIcon": "build/icon.png",
+      "uninstallerIcon": "build/icon.png"
     }
   },
   "dependencies": {
     "@google/genai": "^2.4.0",
     "@tailwindcss/vite": "^4.1.14",
+    "@tauri-apps/api": "^2.11.1",
+    "@tauri-apps/cli": "^2.11.4",
     "@vitejs/plugin-react": "^5.0.4",
+    "dotenv": "^17.2.3",
+    "express": "^4.21.2",
     "lucide-react": "^0.546.0",
+    "motion": "^12.23.24",
     "react": "^19.0.1",
     "react-dom": "^19.0.1",
-    "vite": "^6.2.3",
-    "express": "^4.21.2",
-    "dotenv": "^17.2.3",
-    "motion": "^12.23.24"
+    "vite": "^6.2.3"
   },
   "devDependencies": {
     "@types/express": "^4.17.21",

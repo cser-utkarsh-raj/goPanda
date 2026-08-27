@@ -1,30 +1,32 @@
-const { app, BrowserWindow, ipcMain, screen, Tray, Menu } = require('electron');
+const { app, BrowserWindow, ipcMain, screen, Menu } = require('electron');
 const path = require('path');
 
 let mainWindow = null;
-let tray = null;
-let currentMode = 'mini'; // default to cute floating circular widget on desktop!
+let currentMode = 'full'; // Start as the full desktop app studio!
+let savedBounds = null;
 
-function createFloatingWindow() {
+function getIconPath() {
+  return path.join(__dirname, '../public/icon.png');
+}
+
+function createAppWindow() {
   const primaryDisplay = screen.getPrimaryDisplay();
   const { width: screenWidth, height: screenHeight } = primaryDisplay.workAreaSize;
 
-  // Floating Circular Widget dimensions
-  const miniWidth = 140;
-  const miniHeight = 160;
+  const defaultWidth = Math.min(1240, Math.max(960, screenWidth - 120));
+  const defaultHeight = Math.min(840, Math.max(680, screenHeight - 100));
 
   mainWindow = new BrowserWindow({
-    width: miniWidth,
-    height: miniHeight,
-    x: screenWidth - miniWidth - 30,
-    y: screenHeight - miniHeight - 40,
-    frame: false,
-    transparent: true,
-    alwaysOnTop: true,
-    resizable: false,
-    hasShadow: false,
-    skipTaskbar: false,
-    backgroundColor: '#00000000',
+    width: defaultWidth,
+    height: defaultHeight,
+    minWidth: 840,
+    minHeight: 580,
+    center: true,
+    title: 'goPanda - Focus Timer & Productivity Studio',
+    icon: getIconPath(),
+    backgroundColor: '#FAF9F6',
+    autoHideMenuBar: true,
+    show: false, // Show gracefully once ready
     webPreferences: {
       preload: path.join(__dirname, 'preload.cjs'),
       nodeIntegration: false,
@@ -33,16 +35,16 @@ function createFloatingWindow() {
     },
   });
 
-  // Keep floating on top of all full-screen games, YouTube, Brave, etc.
-  mainWindow.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
-  mainWindow.setAlwaysOnTop(true, 'screen-saver');
-
-  // Load app (production build index.html or dev server)
+  // Load app (dist build or dev server)
   if (app.isPackaged || process.env.NODE_ENV === 'production') {
     mainWindow.loadFile(path.join(__dirname, '../dist/index.html'));
   } else {
     mainWindow.loadURL('http://localhost:3000');
   }
+
+  mainWindow.once('ready-to-show', () => {
+    mainWindow.show();
+  });
 
   mainWindow.on('closed', () => {
     mainWindow = null;
@@ -55,48 +57,64 @@ function switchToFullMode() {
 
   const primaryDisplay = screen.getPrimaryDisplay();
   const { width: screenWidth, height: screenHeight } = primaryDisplay.workAreaSize;
-  const fullWidth = Math.min(1150, screenWidth - 100);
-  const fullHeight = Math.min(800, screenHeight - 80);
+
+  const targetWidth = savedBounds?.width || Math.min(1240, screenWidth - 120);
+  const targetHeight = savedBounds?.height || Math.min(840, screenHeight - 100);
 
   mainWindow.setAlwaysOnTop(false);
   mainWindow.setResizable(true);
-  mainWindow.setSize(fullWidth, fullHeight);
-  mainWindow.center();
+  mainWindow.setSize(targetWidth, targetHeight);
+
+  if (savedBounds) {
+    mainWindow.setPosition(savedBounds.x, savedBounds.y);
+  } else {
+    mainWindow.center();
+  }
+
   mainWindow.webContents.send('mode-changed', 'full');
 }
 
-function switchToMiniMode() {
+function switchToWidgetMode() {
   if (!mainWindow) return;
-  currentMode = 'mini';
+  savedBounds = mainWindow.getBounds();
+  currentMode = 'widget';
 
   const primaryDisplay = screen.getPrimaryDisplay();
   const { width: screenWidth, height: screenHeight } = primaryDisplay.workAreaSize;
-  const miniWidth = 140;
-  const miniHeight = 160;
 
-  mainWindow.setSize(miniWidth, miniHeight);
-  mainWindow.setPosition(screenWidth - miniWidth - 30, screenHeight - miniHeight - 40);
-  mainWindow.setAlwaysOnTop(true, 'screen-saver');
+  const widgetWidth = 170;
+  const widgetHeight = 190;
+
   mainWindow.setResizable(false);
+  mainWindow.setSize(widgetWidth, widgetHeight);
+  mainWindow.setPosition(screenWidth - widgetWidth - 24, screenHeight - widgetHeight - 28);
+  mainWindow.setAlwaysOnTop(true, 'screen-saver');
   mainWindow.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
-  mainWindow.webContents.send('mode-changed', 'mini');
+
+  mainWindow.webContents.send('mode-changed', 'widget');
 }
 
-// IPC Handlers from React Web App
+// IPC Handlers
 ipcMain.on('switch-view-mode', (event, mode) => {
-  if (mode === 'full') {
-    switchToFullMode();
+  if (mode === 'widget') {
+    switchToWidgetMode();
   } else {
-    switchToMiniMode();
+    switchToFullMode();
   }
 });
 
 ipcMain.on('toggle-view-mode', () => {
-  if (currentMode === 'mini') {
+  if (currentMode === 'widget') {
     switchToFullMode();
   } else {
-    switchToMiniMode();
+    switchToWidgetMode();
   }
+});
+
+ipcMain.on('toggle-fullscreen', () => {
+  if (!mainWindow) return;
+  const isFull = mainWindow.isFullScreen();
+  mainWindow.setFullScreen(!isFull);
 });
 
 ipcMain.on('minimize-app', () => {
@@ -108,11 +126,11 @@ ipcMain.on('close-app', () => {
 });
 
 app.whenReady().then(() => {
-  createFloatingWindow();
+  createAppWindow();
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
-      createFloatingWindow();
+      createAppWindow();
     }
   });
 });
@@ -122,3 +140,4 @@ app.on('window-all-closed', () => {
     app.quit();
   }
 });
+
