@@ -631,7 +631,7 @@ export const PomoTimer: React.FC<PomoTimerProps> = ({
       {/* Quick Focus Duration Adjustment Controls (+5m, +10m, -5m) */}
       <div className="flex flex-wrap items-center justify-between gap-2 mt-3 pt-3 border-t-2 border-stone-100 w-full text-xs text-stone-800">
         <div className="flex items-center gap-1.5 font-black text-stone-900">
-          <Sparkles className="w-3.5 h-3.5 text-emerald-700" />
+          <Clock className="w-4 h-4 text-emerald-700 stroke-[2.5]" />
           <span>Adjust Duration:</span>
         </div>
 

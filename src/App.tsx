@@ -17,6 +17,7 @@ import {
   Award,
   CheckCircle2,
   Download,
+  ExternalLink,
 } from 'lucide-react';
 
 import {
@@ -449,6 +450,99 @@ export default function App() {
     }
   };
 
+  const handleToggleFloatingWidget = async () => {
+    if (settings.soundEnabled) playBambooClick(0.2);
+    if (viewMode === 'mini') {
+      setViewMode('full');
+    } else {
+      setViewMode('mini');
+      // If PiP is supported, also launch the on-top floating window
+      if ('documentPictureInPicture' in window) {
+        handleLaunchAlwaysOnTop();
+      }
+    }
+  };
+
+  const handleLaunchAlwaysOnTop = async () => {
+    if (settings.soundEnabled) playBambooClick(0.2);
+    if ('documentPictureInPicture' in window) {
+      try {
+        const pipWindow = await (window as any).documentPictureInPicture.requestWindow({
+          width: 280,
+          height: 280,
+        });
+
+        document.querySelectorAll('style, link[rel="stylesheet"]').forEach((el) => {
+          pipWindow.document.head.appendChild(el.cloneNode(true));
+        });
+
+        const updatePiP = () => {
+          const formattedCurrentTime = formatTime(
+            timerMode === 'stopwatch' ? stopwatchElapsedSeconds : remainingSeconds
+          );
+          const currentProgress =
+            timerMode === 'stopwatch'
+              ? Math.min(100, Math.round(((stopwatchElapsedSeconds % 1500) / 1500) * 100))
+              : totalDurationSeconds > 0
+              ? Math.min(
+                  100,
+                  Math.max(
+                    0,
+                    Math.round(
+                      ((totalDurationSeconds - remainingSeconds) / totalDurationSeconds) * 100
+                    )
+                  )
+                )
+              : 0;
+
+          pipWindow.document.body.style.margin = '0';
+          pipWindow.document.body.style.background = '#FAF9F6';
+          pipWindow.document.body.style.fontFamily = 'system-ui, -apple-system, sans-serif';
+          pipWindow.document.body.style.userSelect = 'none';
+
+          pipWindow.document.body.innerHTML = `
+            <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh; padding:16px; box-sizing:border-box; text-align:center;">
+              <div style="display:flex; align-items:center; gap:6px; margin-bottom:8px;">
+                <span style="font-weight:900; font-size:14px; color:#1C1917;">goPanda</span>
+                <span style="font-size:10px; font-weight:800; background:#86EFAC; border:1.5px solid #000; padding:1px 6px; border-radius:6px; color:#000;">
+                  ${phase === 'work' ? 'Focus' : 'Break'} (${currentProgress}%)
+                </span>
+              </div>
+              <div style="font-size:36px; font-family:monospace; font-weight:900; color:#15803D; line-height:1; margin-bottom:6px;">
+                ${formattedCurrentTime}
+              </div>
+              <div style="font-size:11px; font-weight:700; color:#44403C; margin-bottom:10px; max-width:200px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+                ${activeTask ? activeTask.title : 'Focus Session'}
+              </div>
+              <div style="width:100%; height:8px; background:#E5E7EB; border:1.5px solid #000; border-radius:999px; overflow:hidden; margin-bottom:12px;">
+                <div style="width:${currentProgress}%; height:100%; background:#22C55E; border-radius:999px;"></div>
+              </div>
+              <div style="display:flex; gap:8px;">
+                <button id="pip-toggle" style="background:${isRunning ? '#FEF08A' : '#4ADE80'}; font-weight:900; font-size:12px; border:2px solid #000; border-radius:10px; padding:6px 14px; cursor:pointer; box-shadow:2px 2px 0 #000;">
+                  ${isRunning ? 'Pause' : 'Start'}
+                </button>
+                <button id="pip-skip" style="background:#FFFFFF; font-weight:900; font-size:12px; border:2px solid #000; border-radius:10px; padding:6px 10px; cursor:pointer; box-shadow:2px 2px 0 #000;">
+                  Skip
+                </button>
+              </div>
+            </div>
+          `;
+
+          const toggleBtn = pipWindow.document.getElementById('pip-toggle');
+          if (toggleBtn) toggleBtn.onclick = () => handleTogglePlayPause();
+          const skipBtn = pipWindow.document.getElementById('pip-skip');
+          if (skipBtn) skipBtn.onclick = () => handleNextPhase();
+        };
+
+        updatePiP();
+        const intervalId = setInterval(updatePiP, 1000);
+        pipWindow.addEventListener('pagehide', () => clearInterval(intervalId));
+      } catch (err) {
+        console.warn('PiP window request failed', err);
+      }
+    }
+  };
+
   const activeTask = subtasks.find((t) => t.id === activeTaskId) || null;
 
   return (
@@ -498,22 +592,28 @@ export default function App() {
             <span>Reset Demo</span>
           </button>
 
-          {/* Mini Widget Toggle */}
+          {/* Floating Widget (Always on Top) */}
           <button
-            id="btn-toggle-mini-mode"
-            onClick={() => {
-              setViewMode(viewMode === 'mini' ? 'full' : 'mini');
-              if (settings.soundEnabled) playBambooClick(0.2);
-            }}
+            id="btn-toggle-floating-widget"
+            onClick={handleToggleFloatingWidget}
             className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-black border-2 border-black transition-all shadow-[2px_2px_0px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none ${
               viewMode === 'mini'
                 ? 'bg-emerald-400 text-stone-950'
-                : 'bg-white text-stone-950 hover:bg-stone-50'
+                : 'bg-sky-200 hover:bg-sky-300 text-stone-950'
             }`}
-            title="Toggle compact mini floating widget"
+            title="Launch floating panda widget on top of all apps, desktop and tabs"
           >
-            {viewMode === 'mini' ? <Maximize2 className="w-3.5 h-3.5 stroke-[2.5]" /> : <Minimize2 className="w-3.5 h-3.5 stroke-[2.5]" />}
-            <span className="hidden sm:inline">{viewMode === 'mini' ? 'Full View' : 'Mini Widget'}</span>
+            {viewMode === 'mini' ? (
+              <>
+                <Maximize2 className="w-3.5 h-3.5 stroke-[2.5]" />
+                <span className="hidden sm:inline">Full Workspace</span>
+              </>
+            ) : (
+              <>
+                <ExternalLink className="w-3.5 h-3.5 stroke-[2.5]" />
+                <span className="hidden sm:inline">Floating Widget</span>
+              </>
+            )}
           </button>
 
           {/* Settings Modal Toggle */}

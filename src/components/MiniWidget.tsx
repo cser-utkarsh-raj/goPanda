@@ -145,27 +145,87 @@ export const MiniWidget: React.FC<MiniWidgetProps> = ({
     if ('documentPictureInPicture' in window) {
       try {
         const pipWindow = await (window as any).documentPictureInPicture.requestWindow({
-          width: 320,
-          height: 180,
+          width: 280,
+          height: 280,
         });
 
-        // Copy styles
+        // Copy all stylesheets from main document
         document.querySelectorAll('style, link[rel="stylesheet"]').forEach((el) => {
           pipWindow.document.head.appendChild(el.cloneNode(true));
         });
 
-        pipWindow.document.body.innerHTML = `
-          <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh; background:#FAF9F6; font-family:sans-serif; margin:0; padding:12px; box-sizing:border-box;">
-            <div style="font-weight:900; font-size:18px; color:#1C1917; margin-bottom:4px;">goPanda</div>
-            <div style="font-size:28px; font-family:monospace; font-weight:900; color:#15803D;">${displayTime}</div>
-            <div style="font-size:12px; font-weight:bold; color:#44403C; margin-top:4px;">${activeTask ? activeTask.title : (phase === 'work' ? 'Focus Session' : 'Break')} (${sessionProgress}%)</div>
-            <div style="margin-top:8px; width:100%; height:6px; background:#E5E7EB; border-radius:999px; overflow:hidden;">
-              <div style="width:${sessionProgress}%; height:100%; background:#22C55E; border-radius:999px;"></div>
+        // Function to render live PiP view
+        const updatePiPContent = () => {
+          const formattedCurrentTime = formatTime(
+            mode === 'stopwatch' ? stopwatchElapsedSeconds : remainingSeconds
+          );
+          const currentProgress =
+            mode === 'stopwatch'
+              ? Math.min(100, Math.round(((stopwatchElapsedSeconds % 1500) / 1500) * 100))
+              : totalDurationSeconds > 0
+              ? Math.min(
+                  100,
+                  Math.max(
+                    0,
+                    Math.round(
+                      ((totalDurationSeconds - remainingSeconds) / totalDurationSeconds) * 100
+                    )
+                  )
+                )
+              : 0;
+
+          pipWindow.document.body.style.margin = '0';
+          pipWindow.document.body.style.background = '#FAF9F6';
+          pipWindow.document.body.style.fontFamily = 'system-ui, -apple-system, sans-serif';
+          pipWindow.document.body.style.userSelect = 'none';
+
+          pipWindow.document.body.innerHTML = `
+            <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh; padding:16px; box-sizing:border-box; text-align:center;">
+              <div style="display:flex; align-items:center; gap:6px; margin-bottom:8px;">
+                <span style="font-weight:900; font-size:14px; color:#1C1917;">goPanda</span>
+                <span style="font-size:10px; font-weight:800; background:#86EFAC; border:1.5px solid #000; padding:1px 6px; border-radius:6px; color:#000;">
+                  ${phase === 'work' ? 'Focus' : 'Break'} (${currentProgress}%)
+                </span>
+              </div>
+              <div style="font-size:36px; font-family:monospace; font-weight:900; color:#15803D; line-height:1; margin-bottom:6px;">
+                ${formattedCurrentTime}
+              </div>
+              <div style="font-size:11px; font-weight:700; color:#44403C; margin-bottom:10px; max-width:200px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+                ${activeTask ? activeTask.title : 'Focus Session'}
+              </div>
+              <div style="width:100%; height:8px; background:#E5E7EB; border:1.5px solid #000; border-radius:999px; overflow:hidden; margin-bottom:12px;">
+                <div style="width:${currentProgress}%; height:100%; background:#22C55E; border-radius:999px;"></div>
+              </div>
+              <div style="display:flex; gap:8px;">
+                <button id="pip-toggle" style="background:${isRunning ? '#FEF08A' : '#4ADE80'}; font-weight:900; font-size:12px; border:2px solid #000; border-radius:10px; padding:6px 14px; cursor:pointer; box-shadow:2px 2px 0 #000;">
+                  ${isRunning ? 'Pause' : 'Start'}
+                </button>
+                <button id="pip-skip" style="background:#FFFFFF; font-weight:900; font-size:12px; border:2px solid #000; border-radius:10px; padding:6px 10px; cursor:pointer; box-shadow:2px 2px 0 #000;">
+                  Skip
+                </button>
+              </div>
             </div>
-          </div>
-        `;
+          `;
+
+          const toggleBtn = pipWindow.document.getElementById('pip-toggle');
+          if (toggleBtn) {
+            toggleBtn.onclick = () => onTogglePlayPause();
+          }
+          const skipBtn = pipWindow.document.getElementById('pip-skip');
+          if (skipBtn) {
+            skipBtn.onclick = () => onSkipPhase();
+          }
+        };
+
+        updatePiPContent();
+        const intervalId = setInterval(updatePiPContent, 1000);
+
+        pipWindow.addEventListener('pagehide', () => {
+          clearInterval(intervalId);
+        });
       } catch (err) {
         console.warn('PiP window request failed', err);
+        triggerBubble('PiP window active or popup blocked 🐼');
       }
     } else {
       triggerBubble('Drag me anywhere on your screen! 🐼');

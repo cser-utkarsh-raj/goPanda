@@ -224,10 +224,10 @@ export const DownloadModal: React.FC<DownloadModalProps> = ({
                   <div className="p-3 bg-white border border-black rounded-xl space-y-1 shadow-[1px_1px_0px_0px_#000]">
                     <div className="font-black text-stone-950 flex items-center gap-1.5">
                       <span className="w-4 h-4 rounded-full bg-emerald-300 text-stone-950 text-[10px] font-black flex items-center justify-center">3</span>
-                      <span>Launch Anytime</span>
+                      <span>Floating & Auto-Update</span>
                     </div>
                     <p className="text-[11px] text-stone-600 font-medium leading-normal">
-                      goPanda launches instantly from your desktop and pinned taskbar.
+                      Click <strong>Floating Widget</strong> to float over any app. Updates install automatically with each push!
                     </p>
                   </div>
                 </div>
