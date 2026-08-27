@@ -13,14 +13,13 @@ import {
   Maximize2,
   ShieldCheck,
   Zap,
-  Star,
   Monitor,
   Apple,
   Terminal,
-  HeartHandshake,
 } from 'lucide-react';
 import { PandaLogo } from './PandaLogo';
 import { PandaMascot } from './PandaMascot';
+import { DotCompanyLogo } from './DotCompanyLogo';
 
 interface LandingPageProps {
   onLaunchApp?: () => void;
@@ -73,9 +72,10 @@ export function LandingPage({ onLaunchApp }: LandingPageProps) {
             <div>
               <div className="flex items-center gap-2">
                 <span className="font-black text-xl tracking-tight text-stone-950">goPanda</span>
-                <span className="px-2 py-0.5 bg-emerald-300 border border-black rounded text-[10px] font-black text-stone-950">
-                  by uvSoft
-                </span>
+                <div className="flex items-center gap-1.5 px-2 py-0.5 bg-[#CCFBF1] border border-black rounded-lg text-[11px] font-black text-teal-950 shadow-[1px_1px_0px_0px_#000]">
+                  <DotCompanyLogo size={14} variant="icon" />
+                  <span>.dot</span>
+                </div>
               </div>
             </div>
           </div>
@@ -112,8 +112,8 @@ export function LandingPage({ onLaunchApp }: LandingPageProps) {
             animate={{ opacity: 1, y: 0 }}
             className="inline-flex items-center gap-2 px-4 py-1.5 bg-[#FEF08A] border-2 border-black rounded-full text-xs font-black shadow-[2px_2px_0px_0px_#000]"
           >
-            <Sparkles className="w-4 h-4 text-amber-600" />
-            <span>Built with Love by uvSoft for Dedicated Students & Creators</span>
+            <DotCompanyLogo size={16} variant="icon" />
+            <span>Built with Care by .dot for Focused Students & Creators</span>
           </motion.div>
 
           <motion.h1
@@ -190,9 +190,10 @@ export function LandingPage({ onLaunchApp }: LandingPageProps) {
                   <div className="w-3.5 h-3.5 rounded-full bg-emerald-400 border border-black" />
                   <span className="text-xs font-black text-stone-900 ml-2">goPanda Workspace Preview</span>
                 </div>
-                <span className="text-[11px] font-black text-emerald-700 bg-emerald-100 px-2.5 py-0.5 rounded-full border border-black">
-                  uvSoft Desktop Edition
-                </span>
+                <div className="flex items-center gap-1.5 text-[11px] font-black text-teal-900 bg-teal-100 px-2.5 py-0.5 rounded-full border border-black">
+                  <DotCompanyLogo size={13} variant="icon" />
+                  <span>.dot Edition</span>
+                </div>
               </div>
 
               {/* 3-Column Visual Layout Showcase */}
@@ -291,7 +292,7 @@ export function LandingPage({ onLaunchApp }: LandingPageProps) {
               Features You'll Actually Use Every Day
             </h2>
             <p className="text-xs sm:text-sm text-stone-600 max-w-lg mx-auto font-medium">
-              No endless settings or distractions. Pure, refined productivity tools built by uvSoft.
+              No endless settings or distractions. Pure, refined productivity tools built by .dot.
             </p>
           </div>
 
@@ -373,7 +374,7 @@ export function LandingPage({ onLaunchApp }: LandingPageProps) {
               Engineered for Pure Performance
             </h2>
             <p className="text-xs sm:text-sm text-stone-600 font-medium">
-              Why goPanda by uvSoft is built with native WebView2 instead of bloated Electron wrappers.
+              Why goPanda by .dot is built with native WebView2 instead of bloated Electron wrappers.
             </p>
           </div>
 
@@ -517,18 +518,28 @@ export function LandingPage({ onLaunchApp }: LandingPageProps) {
       </section>
 
       {/* Footer */}
-      <footer className="border-t-3 border-black bg-stone-950 text-white py-10 px-4 sm:px-8 text-center text-xs">
-        <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2 font-black text-sm">
-            <PandaLogo size={24} />
-            <span>goPanda</span>
-            <span className="text-stone-400 font-medium text-xs">• A Product by uvSoft</span>
+      <footer className="border-t-3 border-black bg-stone-950 text-white py-12 px-4 sm:px-8 text-center text-xs">
+        <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
+          <div className="flex items-center gap-3 text-left">
+            <div className="w-12 h-12 bg-white rounded-2xl border-2 border-stone-800 flex items-center justify-center shrink-0">
+              <DotCompanyLogo size={36} variant="badge" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2 font-black text-base text-white">
+                <span>goPanda</span>
+                <span className="text-teal-400 font-bold text-xs bg-teal-950 px-2 py-0.5 rounded border border-teal-800">
+                  by .dot
+                </span>
+              </div>
+              <div className="text-stone-400 text-xs mt-0.5 font-medium">
+                Crafted for Deep Focus & Habit Building
+              </div>
+            </div>
           </div>
-          <div className="text-stone-400 font-medium">
-            Designed for Deep Focus & Habit Building
-          </div>
-          <div className="text-stone-500 font-bold">
-            © {new Date().getFullYear()} uvSoft
+
+          <div className="text-stone-400 font-medium text-xs sm:text-right">
+            <div>© {new Date().getFullYear()} .dot. All rights reserved.</div>
+            <div className="text-stone-500 text-[11px] mt-0.5">Ultra-Lightweight Desktop Productivity Engine</div>
           </div>
         </div>
       </footer>

@@ -37,6 +37,7 @@ import { StickyNotes } from './components/StickyNotes';
 import { MiniWidget } from './components/MiniWidget';
 import { SettingsModal } from './components/SettingsModal';
 import { DownloadModal } from './components/DownloadModal';
+import { DotCompanyLogo } from './components/DotCompanyLogo';
 import { LandingPage } from './components/LandingPage';
 import { playBambooClick, playChime, playTaskCheer } from './utils/audio';
 import { formatTime } from './utils/time';
@@ -575,9 +576,10 @@ export default function App() {
                 <h1 className="font-black text-stone-950 tracking-tight text-base sm:text-lg leading-tight">
                   goPanda
                 </h1>
-                <span className="px-2.5 py-0.5 bg-emerald-300 border border-black text-stone-950 text-[10px] font-black rounded-md shadow-[1px_1px_0px_0px_#000]">
-                  uvSoft
-                </span>
+                <div className="flex items-center gap-1.5 px-2 py-0.5 bg-[#CCFBF1] border border-black text-teal-950 text-[10px] font-black rounded-md shadow-[1px_1px_0px_0px_#000]">
+                  <DotCompanyLogo size={12} variant="icon" />
+                  <span>.dot</span>
+                </div>
               </div>
             </div>
           </button>
@@ -996,7 +998,7 @@ export default function App() {
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-1.5 text-stone-900">
             <PandaLogo size={18} />
-            <span><strong>goPanda</strong> <span className="text-stone-500 font-medium text-[11px]">by uvSoft</span></span>
+            <span><strong>goPanda</strong> <span className="text-teal-700 font-bold text-[11px]">by .dot</span></span>
           </div>
           <span>•</span>
           <span className="hidden sm:inline">Shortcuts: <strong>Space</strong> (play/pause), <strong>R</strong> (reset), <strong>S</strong> (skip)</span>
