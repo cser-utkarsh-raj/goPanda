@@ -10,6 +10,7 @@ import {
   Zap,
   CheckCircle2,
   Sparkles,
+  ExternalLink,
 } from 'lucide-react';
 import { PandaLogo } from './PandaLogo';
 import { playBambooClick } from '../utils/audio';
@@ -169,18 +170,18 @@ export const DownloadModal: React.FC<DownloadModalProps> = ({
                       <div className="font-black text-stone-950 text-base flex items-center gap-2">
                         <span>Native Desktop Apps</span>
                         <span className="px-2 py-0.5 bg-emerald-400 border border-black rounded-md text-[10px] font-black text-stone-950">
-                          ~5 MB Ultra-Light
+                          Lightweight
                         </span>
                       </div>
                       <div className="text-xs text-stone-800 font-bold">
-                        Windows • macOS • Linux • Native System Engine (under 25MB RAM)
+                        Windows • macOS • Linux • Native System Engine
                       </div>
                     </div>
                   </div>
                 </div>
 
                 <p className="text-xs text-stone-900 leading-relaxed font-medium">
-                  Built with Tauri for extreme lightweight performance. Opens as the full 3-column study studio or pop-out floating circle that stays permanently on top of all windows without title bars.
+                  Built with Tauri for high performance. Opens as the full 3-column study studio or pop-out floating circle that stays permanently on top of all windows without title bars.
                 </p>
 
                 {/* Multi-platform download buttons */}
@@ -195,7 +196,7 @@ export const DownloadModal: React.FC<DownloadModalProps> = ({
                       <Download className="w-3.5 h-3.5 stroke-[3]" />
                       <span>Windows (.exe)</span>
                     </div>
-                    <span className="text-[10px] text-stone-300 font-medium">~5 MB Installer</span>
+                    <span className="text-[10px] text-stone-300 font-medium">NSIS Installer</span>
                   </a>
 
                   {/* macOS */}
@@ -222,6 +223,18 @@ export const DownloadModal: React.FC<DownloadModalProps> = ({
                       <span>Linux (.AppImage)</span>
                     </div>
                     <span className="text-[10px] text-stone-600 font-medium">Ubuntu, Fedora, Arch</span>
+                  </a>
+                </div>
+
+                <div className="pt-2 text-center">
+                  <a
+                    href="https://github.com/cser-utkarsh-raj/goPanda/releases/latest"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-[11px] font-black text-stone-700 hover:text-stone-950 underline inline-flex items-center gap-1"
+                  >
+                    <span>View all files & checksums on GitHub Releases</span>
+                    <ExternalLink className="w-3 h-3" />
                   </a>
                 </div>
               </div>

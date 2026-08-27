@@ -401,8 +401,8 @@ export function LandingPage({ onLaunchApp }: LandingPageProps) {
                 </div>
               </div>
               <ul className="space-y-3 text-xs sm:text-sm font-bold text-stone-900">
-                <li className="flex items-center gap-2.5">✅ ~5 MB ultra-compact installer</li>
-                <li className="flex items-center gap-2.5">✅ Under 25MB RAM memory footprint</li>
+                <li className="flex items-center gap-2.5">✅ Ultra-compact native installer</li>
+                <li className="flex items-center gap-2.5">✅ Minimal memory footprint</li>
                 <li className="flex items-center gap-2.5">✅ Instant sub-second launch time</li>
                 <li className="flex items-center gap-2.5">✅ Zero laptop battery lag during study marathons</li>
               </ul>
@@ -475,7 +475,7 @@ export function LandingPage({ onLaunchApp }: LandingPageProps) {
                   className="w-full flex items-center justify-center gap-2 py-4 bg-stone-950 hover:bg-stone-800 text-white font-black text-sm sm:text-base border-2 border-black rounded-2xl shadow-[4px_4px_0px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 transition-all"
                 >
                   <Download className="w-5 h-5 stroke-[3]" />
-                  <span>Download goPanda-Setup.exe (~5MB)</span>
+                  <span>Download goPanda-Setup.exe</span>
                 </a>
               </div>
             )}
@@ -511,8 +511,29 @@ export function LandingPage({ onLaunchApp }: LandingPageProps) {
                   <Download className="w-5 h-5 stroke-[3]" />
                   <span>Download goPanda.AppImage</span>
                 </a>
+                <div className="pt-1">
+                  <a
+                    href="https://github.com/cser-utkarsh-raj/goPanda/releases/latest/download/goPanda.deb"
+                    download="goPanda.deb"
+                    className="text-xs font-black text-stone-800 underline hover:text-emerald-700 transition-colors"
+                  >
+                    Download Debian / Ubuntu .deb package
+                  </a>
+                </div>
               </div>
             )}
+
+            <div className="pt-2 border-t border-stone-200 text-center">
+              <a
+                href="https://github.com/cser-utkarsh-raj/goPanda/releases/latest"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-1.5 text-xs font-black text-stone-700 hover:text-stone-950 underline decoration-stone-400"
+              >
+                <span>Browse all builds & checksums on GitHub Releases</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </a>
+            </div>
           </div>
         </div>
       </section>

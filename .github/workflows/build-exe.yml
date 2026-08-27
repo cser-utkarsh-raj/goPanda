@@ -49,28 +49,55 @@ jobs:
       - name: Install Frontend Dependencies
         run: npm install
 
-      - name: Build Desktop Apps (~5MB)
+      - name: Build Desktop Apps
         uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tagName: latest
-          releaseName: 'goPanda Lightweight Desktop Release (~5MB)'
+          releaseName: 'goPanda Native Desktop Release'
           releaseBody: |
-            ## 🎋 goPanda Ultra-Lightweight Desktop Apps (~5 MB)
+            ## 🎋 goPanda Native Desktop Apps
             - **Windows**: `goPanda-Setup.exe` (NSIS Installer)
-            - **macOS**: `goPanda.dmg`
-            - **Linux**: `goPanda.AppImage` / `.deb`
-            - **Performance**: Native system WebView engine, <25MB RAM, instant launch!
-            - **Overlay**: Stays on top of YouTube, Brave, games & coding editors.
+            - **macOS**: `goPanda.dmg` (Universal Disk Image)
+            - **Linux**: `goPanda.AppImage` & `goPanda.deb`
+            - **Performance**: Native system WebView engine with minimal memory footprint and instant launch!
+            - **Overlay**: Floating circle stays on top of YouTube, PDF readers, and code editors.
           releaseDraft: false
           prerelease: false
+
+      - name: Prepare Clean Release Aliases
+        shell: bash
+        run: |
+          mkdir -p release-assets
+          if [ "${{ matrix.platform }}" = "windows-latest" ]; then
+            find src-tauri/target/release/bundle/nsis -type f -name "*.exe" -exec cp {} release-assets/goPanda-Setup.exe \; 2>/dev/null || true
+            find src-tauri/target/release/bundle/nsis -type f -name "*.exe" -exec cp {} release-assets/ \; 2>/dev/null || true
+            find src-tauri/target/release/bundle/msi -type f -name "*.msi" -exec cp {} release-assets/ \; 2>/dev/null || true
+          elif [ "${{ matrix.platform }}" = "macos-latest" ]; then
+            find src-tauri/target/release/bundle/dmg -type f -name "*.dmg" -exec cp {} release-assets/goPanda.dmg \; 2>/dev/null || true
+            find src-tauri/target/release/bundle/dmg -type f -name "*.dmg" -exec cp {} release-assets/ \; 2>/dev/null || true
+          elif [ "${{ matrix.platform }}" = "ubuntu-22.04" ]; then
+            find src-tauri/target/release/bundle/appimage -type f -name "*.AppImage" -exec cp {} release-assets/goPanda.AppImage \; 2>/dev/null || true
+            find src-tauri/target/release/bundle/appimage -type f -name "*.AppImage" -exec cp {} release-assets/ \; 2>/dev/null || true
+            find src-tauri/target/release/bundle/deb -type f -name "*.deb" -exec cp {} release-assets/goPanda.deb \; 2>/dev/null || true
+            find src-tauri/target/release/bundle/deb -type f -name "*.deb" -exec cp {} release-assets/ \; 2>/dev/null || true
+          fi
+          ls -la release-assets
+
+      - name: Publish & Overwrite Release Assets
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          gh release upload latest release-assets/* --clobber --repo ${{ github.repository }} || true
 
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: goPanda-${{ matrix.name }}-binaries
           path: |
+            release-assets/*
             src-tauri/target/release/bundle/nsis/*.exe
             src-tauri/target/release/bundle/dmg/*.dmg
             src-tauri/target/release/bundle/appimage/*.AppImage
