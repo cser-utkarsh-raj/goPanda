@@ -1,0 +1,6 @@
+{
+  "name": "goPanda",
+  "description": "A cute, lightweight focus timer and sticky notes widget with subtask tracking.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
