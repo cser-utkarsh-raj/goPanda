@@ -1,4 +1,4 @@
-use tauri::{AppHandle, Manager, PhysicalPosition, PhysicalSize};
+use tauri::{AppHandle, Emitter, Manager, PhysicalPosition, PhysicalSize};
 
 #[tauri::command]
 fn switch_view_mode(app: AppHandle, mode: String) -> Result<(), String> {
