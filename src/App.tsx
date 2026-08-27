@@ -567,7 +567,7 @@ export default function App() {
                 isTimerRunning={isRunning}
               />
               <p className="text-xs text-stone-600 font-medium mt-3 mb-4">
-                Pomo-Panda is resting in compact mode at the bottom-right corner of your screen.
+                goPanda is floating in compact mode. Drag it anywhere or click to expand!
               </p>
               <button
                 onClick={() => setViewMode('full')}
@@ -582,6 +582,7 @@ export default function App() {
               mode={timerMode}
               phase={phase}
               remainingSeconds={remainingSeconds}
+              totalDurationSeconds={totalDurationSeconds}
               stopwatchElapsedSeconds={stopwatchElapsedSeconds}
               isRunning={isRunning}
               activeTask={activeTask}
@@ -590,6 +591,7 @@ export default function App() {
               onTogglePlayPause={handleTogglePlayPause}
               onSkipPhase={handleNextPhase}
               onExpand={() => setViewMode('full')}
+              bubbleNotification={customSpeech || celebrationToast}
             />
           </div>
         ) : (
