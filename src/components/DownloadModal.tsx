@@ -185,13 +185,12 @@ export const DownloadModal: React.FC<DownloadModalProps> = ({
 
                 <div className="flex flex-col sm:flex-row gap-2">
                   <a
-                    href="https://github.com/cser-utkarsh-raj/goPanda/actions"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-stone-950 hover:bg-stone-800 text-white font-black text-xs border-2 border-black rounded-xl shadow-[2px_2px_0px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 transition-all text-center"
+                    href="https://github.com/cser-utkarsh-raj/goPanda/releases/latest/download/goPanda-Setup.exe"
+                    download="goPanda-Setup.exe"
+                    className="flex-1 flex items-center justify-center gap-2 py-3 bg-stone-950 hover:bg-stone-800 text-white font-black text-sm border-2 border-black rounded-xl shadow-[3px_3px_0px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 transition-all text-center cursor-pointer"
                   >
                     <Download className="w-4 h-4 stroke-[3]" />
-                    <span>Download Windows EXE from GitHub</span>
+                    <span>Download goPanda (.exe)</span>
                   </a>
                 </div>
               </div>
