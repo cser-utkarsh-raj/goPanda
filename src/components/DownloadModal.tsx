@@ -158,16 +158,54 @@ export const DownloadModal: React.FC<DownloadModalProps> = ({
         <div className="p-5 overflow-y-auto custom-scrollbar space-y-4 flex-1">
           {activeTab === 'desktop' && (
             <div className="space-y-4">
-              {/* Primary Install Banner */}
+              {/* Native Windows .exe Box for True Floating Circle */}
+              <div className="bg-[#FEF08A] p-4 sm:p-5 rounded-2xl border-2 border-black shadow-[4px_4px_0px_0px_#000] space-y-3">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-2xl bg-white border-2 border-black flex items-center justify-center shadow-[2px_2px_0px_0px_#000]">
+                      <Monitor className="w-6 h-6 text-amber-900" />
+                    </div>
+                    <div>
+                      <div className="font-black text-stone-950 text-base flex items-center gap-2">
+                        <span>Windows Desktop EXE (.exe)</span>
+                        <span className="px-2 py-0.5 bg-emerald-400 border border-black rounded-md text-[10px] font-black text-stone-950">
+                          True Floating Circle
+                        </span>
+                      </div>
+                      <div className="text-xs text-stone-800 font-bold">
+                        Borderless circular widget that stays on top of YouTube & Brave
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <p className="text-xs text-stone-900 leading-relaxed font-medium">
+                  The native Windows package runs as a standalone, transparent floating Panda circle on your desktop. It floats permanently on top of all windows without title bars or address boxes.
+                </p>
+
+                <div className="flex flex-col sm:flex-row gap-2">
+                  <a
+                    href="https://github.com/cser-utkarsh-raj/goPanda/actions"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-stone-950 hover:bg-stone-800 text-white font-black text-xs border-2 border-black rounded-xl shadow-[2px_2px_0px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 transition-all text-center"
+                  >
+                    <Download className="w-4 h-4 stroke-[3]" />
+                    <span>Download Windows EXE from GitHub</span>
+                  </a>
+                </div>
+              </div>
+
+              {/* Instant Web PWA Install */}
               <div className="bg-[#E8F5E9] p-4 sm:p-5 rounded-2xl border-2 border-black shadow-[4px_4px_0px_0px_#000] space-y-3">
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex items-center gap-3">
                     <div className="w-12 h-12 rounded-2xl bg-white border-2 border-black flex items-center justify-center shadow-[2px_2px_0px_0px_#000]">
-                      <Monitor className="w-6 h-6 text-emerald-800" />
+                      <Zap className="w-6 h-6 text-emerald-800" />
                     </div>
                     <div>
                       <div className="font-black text-stone-950 text-base">
-                        Install on Windows / Mac / Linux
+                        Web Desktop App (Instant PWA)
                       </div>
                       <div className="text-xs text-stone-700 font-bold">
                         Standalone window • Taskbar icon • 100% Offline
@@ -180,15 +218,15 @@ export const DownloadModal: React.FC<DownloadModalProps> = ({
                 </div>
 
                 <p className="text-xs text-stone-800 leading-relaxed font-medium">
-                  Install goPanda directly to your computer. It runs in its own distraction-free window with no browser tabs, instant keyboard shortcuts, and zero RAM overhead.
+                  Install goPanda directly from your browser. It opens in its own window without browser tabs and stores all your data offline locally on your device.
                 </p>
 
                 <button
                   onClick={handleInstallClick}
-                  className="w-full flex items-center justify-center gap-2 py-3 bg-emerald-400 hover:bg-emerald-500 text-stone-950 font-black text-sm border-2 border-black rounded-xl shadow-[2px_2px_0px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 transition-all"
+                  className="w-full flex items-center justify-center gap-2 py-2.5 bg-emerald-400 hover:bg-emerald-500 text-stone-950 font-black text-xs border-2 border-black rounded-xl shadow-[2px_2px_0px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 transition-all"
                 >
                   <Download className="w-4 h-4 stroke-[3]" />
-                  <span>{isInstalled ? 'App Already Installed' : 'Install Desktop App'}</span>
+                  <span>{isInstalled ? 'Web App Already Installed' : 'Install Instant Web App'}</span>
                 </button>
               </div>
 

@@ -17,7 +17,6 @@ import {
   Award,
   CheckCircle2,
   Download,
-  ExternalLink,
 } from 'lucide-react';
 
 import {
@@ -38,7 +37,6 @@ import { SettingsModal } from './components/SettingsModal';
 import { DownloadModal } from './components/DownloadModal';
 import { playBambooClick, playChime, playTaskCheer } from './utils/audio';
 import { formatTime } from './utils/time';
-import { openCircularPiP, updatePiPData, isPiPSupported } from './utils/pipWidget';
 
 const DEFAULT_SETTINGS: TimerSettings = {
   workDuration: 25,
@@ -451,60 +449,35 @@ export default function App() {
     }
   };
 
+  const [showFloatingWidget, setShowFloatingWidget] = useState(true);
+
   const activeTask = subtasks.find((t) => t.id === activeTaskId) || null;
 
-  // Keep circular PiP floating widget synchronized with live app state
-  useEffect(() => {
-    updatePiPData({
-      remainingSeconds,
-      totalDurationSeconds,
-      stopwatchElapsedSeconds,
-      mode: timerMode,
-      phase,
-      isRunning,
-      activeTaskTitle: activeTask ? activeTask.title : 'goPanda Focus',
-      onTogglePlayPause: handleTogglePlayPause,
-      onSkipPhase: handleNextPhase,
-    });
-  }, [
-    remainingSeconds,
-    totalDurationSeconds,
-    stopwatchElapsedSeconds,
-    timerMode,
-    phase,
-    isRunning,
-    activeTask,
-  ]);
-
-  const handleToggleFloatingWidget = async () => {
+  const handleToggleFloatingWidget = () => {
     if (settings.soundEnabled) playBambooClick(0.2);
-    if (viewMode === 'mini') {
-      setViewMode('full');
-    } else {
-      setViewMode('mini');
-      // If PiP is supported, launch the cute circular on-top floating widget
-      if (isPiPSupported()) {
-        handleLaunchAlwaysOnTop();
-      }
+    setShowFloatingWidget((prev) => !prev);
+    if (!showFloatingWidget) {
+      setCelebrationToast('Floating Panda Widget activated! 🐼 Drag it anywhere');
+      setTimeout(() => setCelebrationToast(null), 3500);
     }
   };
 
-  const handleLaunchAlwaysOnTop = async () => {
+  const handleToggleViewMode = () => {
     if (settings.soundEnabled) playBambooClick(0.2);
-    if (isPiPSupported()) {
-      await openCircularPiP({
-        remainingSeconds,
-        totalDurationSeconds,
-        stopwatchElapsedSeconds,
-        mode: timerMode,
-        phase,
-        isRunning,
-        activeTaskTitle: activeTask ? activeTask.title : 'goPanda Focus',
-        onTogglePlayPause: handleTogglePlayPause,
-        onSkipPhase: handleNextPhase,
+    const nextMode = viewMode === 'mini' ? 'full' : 'mini';
+    setViewMode(nextMode);
+    if (typeof window !== 'undefined' && window.electronAPI) {
+      window.electronAPI.switchViewMode(nextMode);
+    }
+  };
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.electronAPI) {
+      window.electronAPI.onModeChanged((mode) => {
+        setViewMode(mode);
       });
     }
-  };
+  }, []);
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-between p-3 sm:p-5 md:p-6" id="pomo-panda-app">
@@ -553,16 +526,12 @@ export default function App() {
             <span>Reset Demo</span>
           </button>
 
-          {/* Floating Widget (Always on Top) */}
+          {/* Toggle View Mode (Full Workspace vs Compact Focus) */}
           <button
-            id="btn-toggle-floating-widget"
-            onClick={handleToggleFloatingWidget}
-            className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-black border-2 border-black transition-all shadow-[2px_2px_0px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none ${
-              viewMode === 'mini'
-                ? 'bg-emerald-400 text-stone-950'
-                : 'bg-sky-200 hover:bg-sky-300 text-stone-950'
-            }`}
-            title="Launch floating panda widget on top of all apps, desktop and tabs"
+            id="btn-toggle-view-mode"
+            onClick={handleToggleViewMode}
+            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-black border-2 border-black bg-white hover:bg-stone-100 text-stone-950 transition-all shadow-[2px_2px_0px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"
+            title="Toggle between Full 3-Column Studio and Compact Single-Card Mode"
           >
             {viewMode === 'mini' ? (
               <>
@@ -571,10 +540,25 @@ export default function App() {
               </>
             ) : (
               <>
-                <ExternalLink className="w-3.5 h-3.5 stroke-[2.5]" />
-                <span className="hidden sm:inline">Floating Widget</span>
+                <Minimize2 className="w-3.5 h-3.5 stroke-[2.5]" />
+                <span className="hidden sm:inline">Compact Focus</span>
               </>
             )}
+          </button>
+
+          {/* Toggle Floating Panda Circle Widget */}
+          <button
+            id="btn-toggle-floating-widget"
+            onClick={handleToggleFloatingWidget}
+            className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-black border-2 border-black transition-all shadow-[2px_2px_0px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none ${
+              showFloatingWidget
+                ? 'bg-emerald-400 text-stone-950'
+                : 'bg-stone-200 text-stone-700'
+            }`}
+            title="Toggle Draggable Floating Circular Panda Widget"
+          >
+            <PandaLogo size={14} />
+            <span className="hidden sm:inline">{showFloatingWidget ? 'Widget Active' : 'Show Widget'}</span>
           </button>
 
           {/* Settings Modal Toggle */}
@@ -618,42 +602,68 @@ export default function App() {
       {/* Main Content Area */}
       <main className="w-full max-w-7xl flex-1 flex flex-col justify-center">
         {viewMode === 'mini' ? (
-          /* Mini Widget View Mode with background overlay */
-          <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
-            <div className="bg-white p-6 sm:p-8 rounded-[24px] border-2 border-black shadow-[6px_6px_0px_0px_#000] max-w-sm">
+          /* Compact Focus Mode: Sleek, Distraction-Free View */
+          <div className="flex-1 flex flex-col items-center justify-center p-4 max-w-xl mx-auto w-full">
+            <div className="w-full bg-white p-6 sm:p-8 rounded-[28px] border-2 border-black shadow-[6px_6px_0px_0px_#000] flex flex-col items-center gap-4">
+              {/* Panda Mascot */}
               <PandaMascot
                 mood={getPandaMood()}
                 size="lg"
-                speechText="Mini widget active on screen corner!"
+                speechText={customSpeech}
                 isTimerRunning={isRunning}
+                onPandaClick={() => {
+                  if (activeTask) {
+                    setCustomSpeech(`Stay strong on ${activeTask.title}! 🎋`);
+                  } else {
+                    setCustomSpeech('Panda is focusing with you! 🐾');
+                  }
+                  setTimeout(() => setCustomSpeech(undefined), 4000);
+                }}
               />
-              <p className="text-xs text-stone-600 font-medium mt-3 mb-4">
-                goPanda is floating in compact mode. Drag it anywhere or click to expand!
-              </p>
+
+              {/* Timer & Controls */}
+              <div className="w-full">
+                <PomoTimer
+                  mode={timerMode}
+                  phase={phase}
+                  remainingSeconds={remainingSeconds}
+                  totalDurationSeconds={totalDurationSeconds}
+                  stopwatchElapsedSeconds={stopwatchElapsedSeconds}
+                  isRunning={isRunning}
+                  pomodoroCount={pomodoroCount}
+                  longBreakInterval={settings.longBreakInterval}
+                  activeTask={activeTask}
+                  soundEnabled={settings.soundEnabled}
+                  onTogglePlayPause={handleTogglePlayPause}
+                  onReset={handleResetTimer}
+                  onSkipPhase={handleNextPhase}
+                  onAddMinutes={handleAddMinutes}
+                  onSelectMode={handleSelectMode}
+                  onSelectPhase={handlePhaseChange}
+                  onToggleSound={() =>
+                    setSettings((prev) => ({ ...prev, soundEnabled: !prev.soundEnabled }))
+                  }
+                />
+              </div>
+
+              {/* Subtask selector pill */}
+              {activeTask && (
+                <div className="w-full flex items-center justify-between px-4 py-2.5 bg-stone-50 rounded-2xl border-2 border-stone-200 text-xs font-bold text-stone-800">
+                  <span className="truncate">Tracking: <strong>{activeTask.title}</strong></span>
+                  <span className="text-emerald-700 font-mono font-black ml-2 shrink-0">
+                    {Math.round((activeTask.elapsedSeconds / (activeTask.targetSeconds || 1)) * 100)}%
+                  </span>
+                </div>
+              )}
+
               <button
                 onClick={() => setViewMode('full')}
-                className="px-4 py-2 bg-emerald-400 hover:bg-emerald-500 text-stone-950 rounded-xl text-xs font-black border-2 border-black shadow-[2px_2px_0px_0px_#000] transition-all"
+                className="flex items-center gap-2 px-5 py-2.5 bg-stone-100 hover:bg-stone-200 text-stone-950 rounded-2xl text-xs font-black border-2 border-black shadow-[2px_2px_0px_0px_#000] transition-all active:translate-x-0.5 active:translate-y-0.5"
               >
-                Return to Full Workspace
+                <Maximize2 className="w-3.5 h-3.5 stroke-[2.5]" />
+                <span>Open Full 3-Column Studio</span>
               </button>
             </div>
-
-            {/* Floating Mini Widget */}
-            <MiniWidget
-              mode={timerMode}
-              phase={phase}
-              remainingSeconds={remainingSeconds}
-              totalDurationSeconds={totalDurationSeconds}
-              stopwatchElapsedSeconds={stopwatchElapsedSeconds}
-              isRunning={isRunning}
-              activeTask={activeTask}
-              mood={getPandaMood()}
-              soundEnabled={settings.soundEnabled}
-              onTogglePlayPause={handleTogglePlayPause}
-              onSkipPhase={handleNextPhase}
-              onExpand={() => setViewMode('full')}
-              bubbleNotification={customSpeech || celebrationToast}
-            />
           </div>
         ) : (
           /* Full Studio Workspace */
@@ -778,6 +788,27 @@ export default function App() {
           </div>
         )}
       </main>
+
+      {/* Floating Movable Circular Panda Widget (Always Available & Draggable Anywhere) */}
+      <AnimatePresence>
+        {showFloatingWidget && (
+          <MiniWidget
+            mode={timerMode}
+            phase={phase}
+            remainingSeconds={remainingSeconds}
+            totalDurationSeconds={totalDurationSeconds}
+            stopwatchElapsedSeconds={stopwatchElapsedSeconds}
+            isRunning={isRunning}
+            activeTask={activeTask}
+            mood={getPandaMood()}
+            soundEnabled={settings.soundEnabled}
+            onTogglePlayPause={handleTogglePlayPause}
+            onSkipPhase={handleNextPhase}
+            onExpand={() => setViewMode('full')}
+            bubbleNotification={customSpeech || celebrationToast}
+          />
+        )}
+      </AnimatePresence>
 
       {/* Footer Info Bar */}
       <footer className="w-full max-w-7xl mt-4 pt-3 border-t-2 border-black/10 flex flex-col sm:flex-row items-center justify-between text-xs text-stone-700 font-bold gap-2">

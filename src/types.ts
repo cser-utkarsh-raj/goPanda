@@ -44,3 +44,18 @@ export interface TimerSettings {
 }
 
 export type PandaMood = 'focus' | 'break' | 'sleeping' | 'happy' | 'celebrating' | 'cheering';
+
+export interface ElectronAPI {
+  isElectron: boolean;
+  switchViewMode: (mode: 'mini' | 'full') => void;
+  toggleViewMode: () => void;
+  minimizeApp: () => void;
+  closeApp: () => void;
+  onModeChanged: (callback: (mode: 'mini' | 'full') => void) => void;
+}
+
+declare global {
+  interface Window {
+    electronAPI?: ElectronAPI;
+  }
+}
