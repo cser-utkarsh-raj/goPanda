@@ -17,7 +17,6 @@ import {
   Award,
   CheckCircle2,
   Download,
-  Github,
 } from 'lucide-react';
 
 import {
@@ -475,7 +474,7 @@ export default function App() {
 
         {/* Global Action Controls */}
         <div className="flex items-center gap-2">
-          {/* Download & GitHub Deploy Button */}
+          {/* Install Desktop / Mobile App Button */}
           <button
             id="btn-open-downloads"
             onClick={() => {
@@ -483,10 +482,10 @@ export default function App() {
               if (settings.soundEnabled) playBambooClick(0.2);
             }}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-black border-2 border-black bg-emerald-400 hover:bg-emerald-500 text-stone-950 transition-all shadow-[2px_2px_0px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"
-            title="Download for Windows, Mac, Linux & Deploy on GitHub"
+            title="Install goPanda on Desktop or Mobile"
           >
             <Download className="w-3.5 h-3.5 stroke-[2.5]" />
-            <span className="hidden sm:inline">Get App / Deploy</span>
+            <span className="hidden sm:inline">Install App</span>
           </button>
 
           {/* Reset All Sample Data */}
@@ -732,7 +731,7 @@ export default function App() {
             onClick={() => setIsDownloadModalOpen(true)}
             className="text-stone-900 underline hover:text-emerald-700 transition-colors"
           >
-            Downloads & GitHub Deploy
+            Install Desktop App & Shortcuts
           </button>
           <span className="inline-block w-2.5 h-2.5 rounded-full bg-emerald-400 border border-black" />
         </div>

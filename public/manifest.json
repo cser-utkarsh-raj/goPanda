@@ -1,0 +1,25 @@
+{
+  "short_name": "goPanda",
+  "name": "goPanda • Pomodoro Focus Timer",
+  "description": "A cute, offline-first Pomodoro focus timer and subtask manager with ambient soundscapes.",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "48x48 96x96 192x192 512x512",
+      "purpose": "any"
+    }
+  ],
+  "start_url": "./",
+  "scope": "./",
+  "background_color": "#FAF9F6",
+  "theme_color": "#4ADE80",
+  "display": "standalone",
+  "orientation": "portrait"
+}
