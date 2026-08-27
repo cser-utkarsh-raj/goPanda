@@ -37,6 +37,7 @@ import { StickyNotes } from './components/StickyNotes';
 import { MiniWidget } from './components/MiniWidget';
 import { SettingsModal } from './components/SettingsModal';
 import { DownloadModal } from './components/DownloadModal';
+import { LandingPage } from './components/LandingPage';
 import { playBambooClick, playChime, playTaskCheer } from './utils/audio';
 import { formatTime } from './utils/time';
 import {
@@ -160,13 +161,21 @@ export default function App() {
   const [totalDurationSeconds, setTotalDurationSeconds] = useState(settings.workDuration * 60);
   const [stopwatchElapsedSeconds, setStopwatchElapsedSeconds] = useState(0);
 
-  // UI view state
+  // UI view state: Web visitors always see the homepage first (app is unlocked when installed natively or launched)
+  const [currentScreen, setCurrentScreen] = useState<'home' | 'app'>(() => {
+    if (isDesktopApp()) return 'app';
+    return window.location.hash === '#app' ? 'app' : 'home';
+  });
   const [viewMode, setViewMode] = useState<'full' | 'mini' | 'zen' | 'widget'>('full');
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [mobileTab, setMobileTab] = useState<'timer' | 'tasks' | 'notes'>('timer');
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isDownloadModalOpen, setIsDownloadModalOpen] = useState(false);
   const [celebrationToast, setCelebrationToast] = useState<string | null>(null);
+
+  // Box resizing and layout presets: 'balanced' (4-4-4), 'wide_notes' (3-4-5), 'focus_timer' (5-4-3)
+  const [layoutPreset, setLayoutPreset] = useState<'balanced' | 'wide_notes' | 'focus_timer'>('balanced');
+  const [expandedBox, setExpandedBox] = useState<'timer' | 'tasks' | 'notes' | null>(null);
 
   // Mascot dynamic speech & mood
   const [customSpeech, setCustomSpeech] = useState<string | undefined>(undefined);
@@ -540,42 +549,78 @@ export default function App() {
     );
   }
 
+  // Dedicated Homepage / Showcase Landing (Public web view with all feature highlights & downloads)
+  if (currentScreen === 'home') {
+    return <LandingPage onLaunchApp={() => setCurrentScreen('app')} />;
+  }
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-between p-3 sm:p-5 md:p-6" id="pomo-panda-app">
       {/* Top Navigation Header */}
       <header className="w-full max-w-7xl flex items-center justify-between bg-white px-4 sm:px-5 py-3 rounded-[24px] border-2 border-black shadow-[4px_4px_0px_0px_#000] mb-4">
         {/* Brand Logo & Name */}
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-2xl bg-white border-2 border-black flex items-center justify-center shadow-[2px_2px_0px_0px_#000]">
-            <PandaLogo size={32} />
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <h1 className="font-black text-stone-950 tracking-tight text-base sm:text-lg leading-tight">
-                goPanda
-              </h1>
-              <span className="px-2.5 py-0.5 bg-emerald-300 border border-black text-stone-950 text-[10px] font-black rounded-md shadow-[1px_1px_0px_0px_#000]">
-                Focus Timer
-              </span>
+          <button
+            onClick={() => {
+              if (!isDesktopApp()) setCurrentScreen('home');
+            }}
+            className="flex items-center gap-3 group text-left"
+            title={!isDesktopApp() ? 'Go to Home / Features Showcase' : undefined}
+          >
+            <div className="w-10 h-10 rounded-2xl bg-white border-2 border-black flex items-center justify-center shadow-[2px_2px_0px_0px_#000] group-hover:bg-emerald-50 transition-colors">
+              <PandaLogo size={32} />
             </div>
-          </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <h1 className="font-black text-stone-950 tracking-tight text-base sm:text-lg leading-tight">
+                  goPanda
+                </h1>
+                <span className="px-2.5 py-0.5 bg-emerald-300 border border-black text-stone-950 text-[10px] font-black rounded-md shadow-[1px_1px_0px_0px_#000]">
+                  uvSoft
+                </span>
+              </div>
+            </div>
+          </button>
         </div>
 
         {/* Global Action Controls */}
         <div className="flex items-center gap-2">
-          {/* Install Desktop / Mobile App Button */}
-          <button
-            id="btn-open-downloads"
-            onClick={() => {
-              setIsDownloadModalOpen(true);
-              if (settings.soundEnabled) playBambooClick(0.2);
-            }}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-black border-2 border-black bg-emerald-400 hover:bg-emerald-500 text-stone-950 transition-all shadow-[2px_2px_0px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"
-            title="Install goPanda on Desktop (.exe) or Mobile"
-          >
-            <Download className="w-3.5 h-3.5 stroke-[2.5]" />
-            <span className="hidden sm:inline">Install Desktop .EXE</span>
-          </button>
+          {/* Layout Sizer Toggle */}
+          <div className="hidden md:flex items-center bg-stone-100 p-0.5 rounded-xl border border-stone-300 text-[11px] font-bold">
+            <button
+              onClick={() => setLayoutPreset('balanced')}
+              className={`px-2.5 py-1 rounded-lg transition-all ${
+                layoutPreset === 'balanced'
+                  ? 'bg-white text-stone-950 font-black border border-black shadow-[1px_1px_0px_0px_#000]'
+                  : 'text-stone-600 hover:text-stone-900'
+              }`}
+              title="Balanced 1:1:1 layout"
+            >
+              Balanced
+            </button>
+            <button
+              onClick={() => setLayoutPreset('wide_notes')}
+              className={`px-2.5 py-1 rounded-lg transition-all ${
+                layoutPreset === 'wide_notes'
+                  ? 'bg-white text-stone-950 font-black border border-black shadow-[1px_1px_0px_0px_#000]'
+                  : 'text-stone-600 hover:text-stone-900'
+              }`}
+              title="Wide Notes layout"
+            >
+              Wide Notes
+            </button>
+            <button
+              onClick={() => setLayoutPreset('focus_timer')}
+              className={`px-2.5 py-1 rounded-lg transition-all ${
+                layoutPreset === 'focus_timer'
+                  ? 'bg-white text-stone-950 font-black border border-black shadow-[1px_1px_0px_0px_#000]'
+                  : 'text-stone-600 hover:text-stone-900'
+              }`}
+              title="Timer Focus layout"
+            >
+              Timer Focus
+            </button>
+          </div>
 
           {/* Pop-Out Floating Widget Button */}
           <button
@@ -587,6 +632,19 @@ export default function App() {
             <PandaLogo size={14} />
             <span className="hidden md:inline">Pop Out Circle Widget</span>
           </button>
+
+          {/* Showcase & Downloads (Web only link back to Homepage/Downloads) */}
+          {!isDesktopApp() && (
+            <button
+              id="btn-show-homepage"
+              onClick={() => setCurrentScreen('home')}
+              className="hidden sm:flex items-center gap-1 px-2.5 py-1.5 text-xs text-stone-900 font-bold bg-white hover:bg-stone-100 rounded-xl border border-black shadow-[1.5px_1.5px_0px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 transition-all"
+              title="View Homepage, Feature Highlights & App Downloads"
+            >
+              <Download className="w-3.5 h-3.5" />
+              <span>Downloads</span>
+            </button>
+          )}
 
           {/* Full Screen Toggle */}
           <button
@@ -600,11 +658,11 @@ export default function App() {
           {/* Reset All Sample Data */}
           <button
             onClick={handleResetDefaults}
-            className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 text-xs text-stone-900 font-bold hover:bg-stone-100 rounded-xl border border-stone-300 transition-colors"
+            className="hidden lg:flex items-center gap-1.5 px-2.5 py-1.5 text-xs text-stone-900 font-bold hover:bg-stone-100 rounded-xl border border-stone-300 transition-colors"
             title="Reset to 3-hour sample session"
           >
             <RefreshCw className="w-3.5 h-3.5" />
-            <span>Reset Demo</span>
+            <span>Reset</span>
           </button>
 
           {/* Toggle View Mode (Full Workspace vs Compact Focus) */}
@@ -767,14 +825,33 @@ export default function App() {
 
             {/* 3-Column Responsive Grid on Desktop */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-stretch">
-              {/* Center / Primary Column: Timer & Cute Animated Mascot (5 Cols) */}
+              {/* Center / Primary Column: Timer & Cute Animated Mascot */}
               <div
-                className={`lg:col-span-5 flex flex-col gap-3.5 ${
+                className={`${
+                  expandedBox
+                    ? expandedBox === 'timer'
+                      ? 'lg:col-span-12'
+                      : 'hidden'
+                    : layoutPreset === 'balanced'
+                    ? 'lg:col-span-4'
+                    : layoutPreset === 'wide_notes'
+                    ? 'lg:col-span-3'
+                    : 'lg:col-span-5'
+                } flex flex-col gap-3.5 ${
                   mobileTab === 'timer' ? 'block' : 'hidden lg:flex'
                 }`}
               >
                 {/* Cute Panda Mascot Box */}
                 <div className="bg-white rounded-[24px] border-2 border-black shadow-[4px_4px_0px_0px_#000] p-3.5 flex flex-col items-center justify-center relative overflow-hidden">
+                  <div className="absolute top-3 right-3 z-10">
+                    <button
+                      onClick={() => setExpandedBox(expandedBox === 'timer' ? null : 'timer')}
+                      className="p-1 rounded-lg border border-black bg-stone-50 hover:bg-stone-100 text-stone-900 transition-all shadow-[1px_1px_0px_0px_#000]"
+                      title={expandedBox === 'timer' ? 'Restore standard 3 columns' : 'Expand Timer full width'}
+                    >
+                      {expandedBox === 'timer' ? <Minimize2 className="w-3.5 h-3.5 stroke-[2.5]" /> : <Maximize2 className="w-3.5 h-3.5 stroke-[2.5]" />}
+                    </button>
+                  </div>
                   <PandaMascot
                     mood={getPandaMood()}
                     size="md"
@@ -817,12 +894,31 @@ export default function App() {
                 </div>
               </div>
 
-              {/* Subtasks Tracker Column (4 Cols) */}
+              {/* Subtasks Tracker Column */}
               <div
-                className={`lg:col-span-4 h-[560px] lg:h-auto ${
+                className={`${
+                  expandedBox
+                    ? expandedBox === 'tasks'
+                      ? 'lg:col-span-12'
+                      : 'hidden'
+                    : layoutPreset === 'balanced'
+                    ? 'lg:col-span-4'
+                    : layoutPreset === 'wide_notes'
+                    ? 'lg:col-span-4'
+                    : 'lg:col-span-4'
+                } h-[560px] lg:h-auto relative ${
                   mobileTab === 'tasks' ? 'block' : 'hidden lg:block'
                 }`}
               >
+                <div className="absolute top-3 right-4 z-10">
+                  <button
+                    onClick={() => setExpandedBox(expandedBox === 'tasks' ? null : 'tasks')}
+                    className="p-1 rounded-lg border border-black bg-stone-50 hover:bg-stone-100 text-stone-900 transition-all shadow-[1px_1px_0px_0px_#000]"
+                    title={expandedBox === 'tasks' ? 'Restore standard 3 columns' : 'Expand Tasks full width'}
+                  >
+                    {expandedBox === 'tasks' ? <Minimize2 className="w-3.5 h-3.5 stroke-[2.5]" /> : <Maximize2 className="w-3.5 h-3.5 stroke-[2.5]" />}
+                  </button>
+                </div>
                 <SubtaskTracker
                   tasks={subtasks}
                   activeTaskId={activeTaskId}
@@ -836,12 +932,31 @@ export default function App() {
                 />
               </div>
 
-              {/* Sticky Notes & Checklist Column (3 Cols) */}
+              {/* Sticky Notes & Checklist Column */}
               <div
-                className={`lg:col-span-3 h-[560px] lg:h-auto ${
+                className={`${
+                  expandedBox
+                    ? expandedBox === 'notes'
+                      ? 'lg:col-span-12'
+                      : 'hidden'
+                    : layoutPreset === 'balanced'
+                    ? 'lg:col-span-4'
+                    : layoutPreset === 'wide_notes'
+                    ? 'lg:col-span-5'
+                    : 'lg:col-span-3'
+                } h-[560px] lg:h-auto relative ${
                   mobileTab === 'notes' ? 'block' : 'hidden lg:block'
                 }`}
               >
+                <div className="absolute top-3 right-28 z-10">
+                  <button
+                    onClick={() => setExpandedBox(expandedBox === 'notes' ? null : 'notes')}
+                    className="p-1 rounded-lg border border-black bg-stone-50 hover:bg-stone-100 text-stone-900 transition-all shadow-[1px_1px_0px_0px_#000]"
+                    title={expandedBox === 'notes' ? 'Restore standard 3 columns' : 'Expand Notes full width'}
+                  >
+                    {expandedBox === 'notes' ? <Minimize2 className="w-3.5 h-3.5 stroke-[2.5]" /> : <Maximize2 className="w-3.5 h-3.5 stroke-[2.5]" />}
+                  </button>
+                </div>
                 <StickyNotes
                   notes={stickyNotes}
                   onAddNote={handleAddNote}
@@ -877,23 +992,27 @@ export default function App() {
       </AnimatePresence>
 
       {/* Footer Info Bar */}
-      <footer className="w-full max-w-7xl mt-4 pt-3 border-t-2 border-black/10 flex flex-col sm:flex-row items-center justify-between text-xs text-stone-700 font-bold gap-2">
+      <footer className="w-full max-w-7xl mt-4 pt-3 border-t-2 border-black/10 flex flex-col sm:flex-row items-center justify-between text-xs text-stone-600 font-bold gap-2">
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-1.5">
+          <div className="flex items-center gap-1.5 text-stone-900">
             <PandaLogo size={18} />
-            <span><strong>goPanda</strong> v1.0.0</span>
+            <span><strong>goPanda</strong> <span className="text-stone-500 font-medium text-[11px]">by uvSoft</span></span>
           </div>
           <span>•</span>
-          <span className="hidden sm:inline">Shortcuts: <strong>Space</strong> (play/pause), <strong>R</strong> (reset), <strong>S</strong> (skip), <strong>M</strong> (mini)</span>
+          <span className="hidden sm:inline">Shortcuts: <strong>Space</strong> (play/pause), <strong>R</strong> (reset), <strong>S</strong> (skip)</span>
         </div>
         <div className="flex items-center gap-3">
-          <button
-            onClick={() => setIsDownloadModalOpen(true)}
-            className="text-stone-900 underline hover:text-emerald-700 transition-colors"
-          >
-            Install Desktop App & Shortcuts
-          </button>
-          <span className="inline-block w-2.5 h-2.5 rounded-full bg-emerald-400 border border-black" />
+          {!isDesktopApp() ? (
+            <button
+              onClick={() => setCurrentScreen('home')}
+              className="text-stone-900 underline hover:text-emerald-700 transition-colors"
+            >
+              Feature Showcase & Downloads
+            </button>
+          ) : (
+            <span className="text-stone-500 font-medium">Native Desktop Mode</span>
+          )}
+          <span className="inline-block w-2 h-2 rounded-full bg-emerald-500 border border-black" title="Local Persistence Active" />
         </div>
       </footer>
 

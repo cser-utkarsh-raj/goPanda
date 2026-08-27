@@ -158,7 +158,7 @@ export const DownloadModal: React.FC<DownloadModalProps> = ({
         <div className="p-5 overflow-y-auto custom-scrollbar space-y-4 flex-1">
           {activeTab === 'desktop' && (
             <div className="space-y-4">
-              {/* Native Windows .exe Box for True Floating Circle */}
+              {/* Native Desktop Apps Box (Windows, Mac, Linux) */}
               <div className="bg-[#FEF08A] p-4 sm:p-5 rounded-2xl border-2 border-black shadow-[4px_4px_0px_0px_#000] space-y-3">
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex items-center gap-3">
@@ -167,30 +167,61 @@ export const DownloadModal: React.FC<DownloadModalProps> = ({
                     </div>
                     <div>
                       <div className="font-black text-stone-950 text-base flex items-center gap-2">
-                        <span>Windows App (.exe)</span>
+                        <span>Native Desktop Apps</span>
                         <span className="px-2 py-0.5 bg-emerald-400 border border-black rounded-md text-[10px] font-black text-stone-950">
                           ~5 MB Ultra-Light
                         </span>
                       </div>
                       <div className="text-xs text-stone-800 font-bold">
-                        Native Tauri Engine • Uses ~20MB RAM • Instant Launch
+                        Windows • macOS • Linux • Native System Engine (under 25MB RAM)
                       </div>
                     </div>
                   </div>
                 </div>
 
                 <p className="text-xs text-stone-900 leading-relaxed font-medium">
-                  Built with Tauri for ultra-lightweight performance. Opens as the full 3-column study studio or pop-out floating circle that stays permanently on top of all windows without title bars.
+                  Built with Tauri for extreme lightweight performance. Opens as the full 3-column study studio or pop-out floating circle that stays permanently on top of all windows without title bars.
                 </p>
 
-                <div className="flex flex-col sm:flex-row gap-2">
+                {/* Multi-platform download buttons */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-1">
+                  {/* Windows */}
                   <a
                     href="https://github.com/cser-utkarsh-raj/goPanda/releases/latest/download/goPanda-Setup.exe"
                     download="goPanda-Setup.exe"
-                    className="flex-1 flex items-center justify-center gap-2 py-3 bg-stone-950 hover:bg-stone-800 text-white font-black text-sm border-2 border-black rounded-xl shadow-[3px_3px_0px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 transition-all text-center cursor-pointer"
+                    className="flex flex-col items-center justify-center gap-1 p-2.5 bg-stone-950 hover:bg-stone-800 text-white font-black text-xs border-2 border-black rounded-xl shadow-[2px_2px_0px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 transition-all text-center"
                   >
-                    <Download className="w-4 h-4 stroke-[3]" />
-                    <span>Download Windows Installer (~5MB .exe)</span>
+                    <div className="flex items-center gap-1.5">
+                      <Download className="w-3.5 h-3.5 stroke-[3]" />
+                      <span>Windows (.exe)</span>
+                    </div>
+                    <span className="text-[10px] text-stone-300 font-medium">~5 MB Installer</span>
+                  </a>
+
+                  {/* macOS */}
+                  <a
+                    href="https://github.com/cser-utkarsh-raj/goPanda/releases/latest/download/goPanda.dmg"
+                    download="goPanda.dmg"
+                    className="flex flex-col items-center justify-center gap-1 p-2.5 bg-white hover:bg-stone-100 text-stone-950 font-black text-xs border-2 border-black rounded-xl shadow-[2px_2px_0px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 transition-all text-center"
+                  >
+                    <div className="flex items-center gap-1.5">
+                      <Download className="w-3.5 h-3.5 stroke-[3]" />
+                      <span>macOS (.dmg)</span>
+                    </div>
+                    <span className="text-[10px] text-stone-600 font-medium">Apple Silicon & Intel</span>
+                  </a>
+
+                  {/* Linux */}
+                  <a
+                    href="https://github.com/cser-utkarsh-raj/goPanda/releases/latest/download/goPanda.AppImage"
+                    download="goPanda.AppImage"
+                    className="flex flex-col items-center justify-center gap-1 p-2.5 bg-white hover:bg-stone-100 text-stone-950 font-black text-xs border-2 border-black rounded-xl shadow-[2px_2px_0px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 transition-all text-center"
+                  >
+                    <div className="flex items-center gap-1.5">
+                      <Download className="w-3.5 h-3.5 stroke-[3]" />
+                      <span>Linux (.AppImage)</span>
+                    </div>
+                    <span className="text-[10px] text-stone-600 font-medium">Ubuntu, Fedora, Arch</span>
                   </a>
                 </div>
               </div>

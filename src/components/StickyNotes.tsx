@@ -139,10 +139,10 @@ export const StickyNotes: React.FC<StickyNotesProps> = ({
   return (
     <div className="flex flex-col h-full bg-white rounded-[24px] border-2 border-black shadow-[4px_4px_0px_0px_#000] p-4 sm:p-5 overflow-hidden" id="sticky-notes-panel">
       {/* Header */}
-      <div className="flex items-center justify-between pb-3 border-b-2 border-stone-100">
+      <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b-2 border-stone-100">
         <div className="flex items-center gap-2">
-          <span className="text-sm sm:text-base font-black text-stone-900">Sticky Notes</span>
-          <div className="flex gap-1 bg-stone-100 p-0.5 rounded-lg border border-stone-300 text-[11px]">
+          <span className="text-sm font-black text-stone-900">Sticky Notes</span>
+          <div className="flex gap-1 bg-stone-100 p-0.5 rounded-lg border border-stone-300 text-[10px]">
             <button
               onClick={() => setActiveTab('all')}
               className={`px-2 py-0.5 rounded-md font-bold transition-all ${
@@ -163,23 +163,23 @@ export const StickyNotes: React.FC<StickyNotesProps> = ({
         </div>
 
         {/* Action buttons */}
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-1.5 shrink-0">
           <button
             id="btn-add-text-note"
             onClick={() => handleCreateNew(false)}
-            className="flex items-center gap-1 px-2.5 py-1.5 bg-[#FEF08A] hover:bg-[#FDE047] text-stone-950 border border-black rounded-xl text-xs font-bold transition-all shadow-[2px_2px_0px_0px_#000] active:translate-x-0.5 active:translate-y-0.5"
+            className="flex items-center gap-1 px-2 py-1 bg-[#FEF08A] hover:bg-[#FDE047] text-stone-950 border border-black rounded-lg text-xs font-bold transition-all shadow-[1.5px_1.5px_0px_0px_#000] active:translate-x-0.5 active:translate-y-0.5"
             title="Create Text Note"
           >
-            <AlignLeft className="w-3.5 h-3.5 stroke-[2.5]" />
+            <AlignLeft className="w-3 h-3 stroke-[2.5]" />
             <span>Note</span>
           </button>
           <button
             id="btn-add-checklist-note"
             onClick={() => handleCreateNew(true)}
-            className="flex items-center gap-1 px-2.5 py-1.5 bg-emerald-400 hover:bg-emerald-500 text-stone-950 border-2 border-black rounded-xl text-xs font-black transition-all shadow-[2px_2px_0px_0px_#000] active:translate-x-0.5 active:translate-y-0.5"
+            className="flex items-center gap-1 px-2 py-1 bg-emerald-400 hover:bg-emerald-500 text-stone-950 border-2 border-black rounded-lg text-xs font-black transition-all shadow-[1.5px_1.5px_0px_0px_#000] active:translate-x-0.5 active:translate-y-0.5"
             title="Create Checklist Sticky Note"
           >
-            <CheckSquare className="w-3.5 h-3.5 stroke-[2.5]" />
+            <CheckSquare className="w-3 h-3 stroke-[2.5]" />
             <span>List</span>
           </button>
         </div>
@@ -222,10 +222,10 @@ export const StickyNotes: React.FC<StickyNotesProps> = ({
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.95 }}
                   id={`sticky-note-card-${note.id}`}
-                  className={`rounded-2xl border-2 border-black ${style.bg} shadow-[3px_3px_0px_0px_#000] p-3.5 transition-all relative group`}
+                  className={`rounded-2xl border-2 border-black ${style.bg} shadow-[3px_3px_0px_0px_#000] p-3 transition-all relative group overflow-hidden`}
                 >
                   {/* Top Note Bar */}
-                  <div className="flex items-center justify-between gap-1 pb-1.5 border-b border-black/15 mb-2">
+                  <div className="flex flex-wrap items-center justify-between gap-1.5 pb-1.5 border-b border-black/15 mb-2">
                     {/* Note Title Input */}
                     <input
                       type="text"
@@ -233,63 +233,66 @@ export const StickyNotes: React.FC<StickyNotesProps> = ({
                       onChange={(e) =>
                         onUpdateNote({ ...note, title: e.target.value, updatedAt: Date.now() })
                       }
-                      className={`text-xs font-black ${style.text} bg-transparent border-b border-transparent focus:border-black focus:outline-none flex-1 truncate`}
+                      className={`text-xs font-black ${style.text} bg-transparent border-b border-transparent focus:border-black focus:outline-none min-w-[90px] flex-1 truncate`}
                       placeholder="Untitled note"
                     />
 
-                    {/* Color Dots */}
-                    <div className="flex items-center gap-1 opacity-70 group-hover:opacity-100 transition-opacity">
-                      {(['matcha', 'creamy', 'peach', 'bamboo', 'lavender', 'slate'] as StickyNoteColor[]).map(
-                        (col) => (
-                          <button
-                            key={col}
-                            onClick={() => {
-                              onUpdateNote({ ...note, color: col, updatedAt: Date.now() });
-                              if (soundEnabled) playBambooClick(0.1);
-                            }}
-                            className={`w-3 h-3 rounded-full border border-black transition-transform ${
-                              col === 'matcha'
-                                ? 'bg-emerald-400'
-                                : col === 'creamy'
-                                ? 'bg-yellow-300'
-                                : col === 'peach'
-                                ? 'bg-rose-300'
-                                : col === 'bamboo'
-                                ? 'bg-teal-400'
-                                : col === 'lavender'
-                                ? 'bg-purple-300'
-                                : 'bg-stone-300'
-                            } ${note.color === col ? 'ring-2 ring-black scale-125' : 'hover:scale-110'}`}
-                            title={`Set color: ${col}`}
-                          />
-                        )
-                      )}
+                    {/* Actions & Color Dots in compact inline row */}
+                    <div className="flex items-center gap-1 shrink-0">
+                      {/* Color Palette Buttons */}
+                      <div className="flex items-center gap-0.5">
+                        {(['matcha', 'creamy', 'peach', 'bamboo', 'lavender', 'slate'] as StickyNoteColor[]).map(
+                          (col) => (
+                            <button
+                              key={col}
+                              onClick={() => {
+                                onUpdateNote({ ...note, color: col, updatedAt: Date.now() });
+                                if (soundEnabled) playBambooClick(0.1);
+                              }}
+                              className={`w-2.5 h-2.5 rounded-full border border-black transition-transform ${
+                                col === 'matcha'
+                                  ? 'bg-emerald-400'
+                                  : col === 'creamy'
+                                  ? 'bg-yellow-300'
+                                  : col === 'peach'
+                                  ? 'bg-rose-300'
+                                  : col === 'bamboo'
+                                  ? 'bg-teal-400'
+                                  : col === 'lavender'
+                                  ? 'bg-purple-300'
+                                  : 'bg-stone-300'
+                              } ${note.color === col ? 'ring-1.5 ring-black scale-125' : 'hover:scale-110 opacity-70'}`}
+                              title={`Set color: ${col}`}
+                            />
+                          )
+                        )}
+                      </div>
+
+                      {/* Pin button */}
+                      <button
+                        onClick={() => handleTogglePin(note)}
+                        className={`p-1 rounded-md border border-transparent transition-all ml-0.5 ${
+                          note.pinned
+                            ? 'text-stone-950 bg-amber-300 border-black shadow-[1px_1px_0px_0px_#000]'
+                            : 'text-stone-500 hover:text-stone-900 hover:bg-black/5'
+                        }`}
+                        title={note.pinned ? 'Unpin note' : 'Pin note to top'}
+                      >
+                        <Pin className={`w-3 h-3 ${note.pinned ? 'fill-black' : ''}`} />
+                      </button>
+
+                      {/* Delete note */}
+                      <button
+                        onClick={() => {
+                          onDeleteNote(note.id);
+                          if (soundEnabled) playBambooClick(0.2);
+                        }}
+                        className="p-1 text-stone-500 hover:text-rose-600 hover:bg-rose-100 rounded-md transition-colors"
+                        title="Delete note"
+                      >
+                        <Trash2 className="w-3 h-3" />
+                      </button>
                     </div>
-
-                    {/* Pin button */}
-                    <button
-                      onClick={() => handleTogglePin(note)}
-                      className={`p-1 rounded-lg border border-transparent transition-all ${
-                        note.pinned
-                          ? 'text-stone-950 bg-amber-300 border-black shadow-[1px_1px_0px_0px_#000]'
-                          : 'text-stone-500 hover:text-stone-900 hover:bg-black/5'
-                      }`}
-                      title={note.pinned ? 'Unpin note' : 'Pin note to top'}
-                    >
-                      <Pin className={`w-3.5 h-3.5 ${note.pinned ? 'fill-black' : ''}`} />
-                    </button>
-
-                    {/* Delete note */}
-                    <button
-                      onClick={() => {
-                        onDeleteNote(note.id);
-                        if (soundEnabled) playBambooClick(0.2);
-                      }}
-                      className="p-1 text-stone-500 hover:text-rose-600 hover:bg-rose-100 rounded-lg transition-colors"
-                      title="Delete note"
-                    >
-                      <Trash2 className="w-3.5 h-3.5" />
-                    </button>
                   </div>
 
                   {/* Content Mode: Checklist vs Freeform Text */}
