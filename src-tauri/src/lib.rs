@@ -11,6 +11,7 @@ fn switch_view_mode(app: AppHandle, mode: String) -> Result<(), String> {
                 let x = screen_size.width.saturating_sub(widget_w + 30);
                 let y = screen_size.height.saturating_sub(widget_h + 60);
 
+                let _ = window.set_decorations(false);
                 let _ = window.set_resizable(false);
                 let _ = window.set_size(PhysicalSize::new(widget_w, widget_h));
                 let _ = window.set_position(PhysicalPosition::new(x as i32, y as i32));
@@ -23,6 +24,7 @@ fn switch_view_mode(app: AppHandle, mode: String) -> Result<(), String> {
                 let full_w = std::cmp::min(1240u32, screen_size.width.saturating_sub(100));
                 let full_h = std::cmp::min(840u32, screen_size.height.saturating_sub(80));
 
+                let _ = window.set_decorations(true);
                 let _ = window.set_always_on_top(false);
                 let _ = window.set_resizable(true);
                 let _ = window.set_size(PhysicalSize::new(full_w, full_h));
