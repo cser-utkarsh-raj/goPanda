@@ -1,25 +1,89 @@
-# goPanda
+# 🐼 goPanda
 
-A friendly, lightweight productivity and utility app built to make everyday tasks simpler, faster, and more enjoyable.
+> **A cute, lightweight Pomodoro timer and productivity companion.**
 
-## About
+`goPanda` is a small productivity app built around one job: **help you start focused work without turning productivity into another complicated system.**
 
-goPanda is part of the **.dot** ecosystem — a collection of practical, experimental, and creative tools built under one umbrella.
+It belongs to the lightweight/public-tool side of the **.dot** ecosystem.
 
-## Features
+## 🍅 What It Does
 
-- Simple, approachable interface
-- Fast browser-based experience
-- Lightweight client-side functionality
-- Designed for practical everyday use
-- Branded as part of the `.dot` ecosystem
+- ⏱️ **Pomodoro-focused workflow** for timed work and breaks.
+- 🐼 **Friendly companion experience** designed to make starting a session feel approachable.
+- 🖥️ **Desktop-capable application** with Tauri support alongside the browser experience.
+- ⚡ **Fast local-first interaction** with a deliberately lightweight UI.
+- ✨ **Motion and micro-interactions** without sacrificing the utility of the timer.
+- 🤖 **AI-ready architecture** using the Google GenAI SDK where intelligent features are introduced.
 
-## Development
+The product is intentionally smaller than .dot's flagship platforms. **goPanda is a tool, not a platform.**
 
-This project is built as a modern web application and is intended to remain lightweight and easy to iterate on.
+## 🧭 Design Philosophy
 
-## .dot
+```text
+Choose a focus block
+        ↓
+      Work
+        ↓
+     Break
+        ↓
+   Repeat / Stop
+```
 
-**Presented by .dot**
+No complicated productivity methodology is required. The goal is to provide a pleasant focus loop that gets out of the way.
 
-`.dot` is the umbrella identity behind the collection of tools and products created across this project ecosystem.
+## 🛠️ Tech Stack
+
+| Layer | Technology |
+|---|---|
+| UI | React 19, TypeScript |
+| Build | Vite |
+| Styling | Tailwind CSS |
+| Motion | Motion |
+| Icons | Lucide React |
+| Desktop | Tauri 2 |
+| Server/runtime utilities | Node.js / Express |
+| AI integration | Google GenAI SDK |
+
+## 🚀 Run Locally
+
+```bash
+git clone https://github.com/cser-utkarsh-raj/goPanda.git
+cd goPanda
+npm install
+npm run dev
+```
+
+The Vite development server uses port `3000`.
+
+Production web build:
+
+```bash
+npm run build
+npm run preview
+```
+
+Desktop build:
+
+```bash
+npm run tauri:build
+```
+
+Type-check:
+
+```bash
+npm run lint
+```
+
+## 📂 Project Direction
+
+goPanda is designed to remain **small, fast, friendly, and easy to iterate on**. It can grow with useful productivity features, but it should not become a bloated task-management suite.
+
+That constraint is part of the product identity.
+
+## 🌐 Part of .dot
+
+`.dot` is the umbrella behind a collection of products and experiments — from flagship platforms such as Sailor and myMentor to infrastructure such as dotRoute and lightweight public tools such as goPanda and NailedIt.
+
+> **goPanda · Focus, one block at a time.**
+>
+> **Presented by .dot**
