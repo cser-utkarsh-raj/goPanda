@@ -6,7 +6,7 @@
 
 It belongs to the lightweight/public-tool side of the **.dot** ecosystem.
 
-## 🍅 What It Does
+## What It Does
 
 - ⏱️ **Pomodoro-focused workflow** for timed work and breaks.
 - 🐼 **Friendly companion experience** designed to make starting a session feel approachable.
