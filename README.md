@@ -6,6 +6,22 @@
 
 It belongs to the lightweight/public-tool side of the **.dot** ecosystem.
 
+## 🔄 Focus Loop
+
+```mermaid
+stateDiagram-v2
+    [*] --> Ready
+    Ready --> Focus: start
+    Focus --> Break: focus block ends
+    Break --> Focus: break ends
+    Focus --> Complete: stop
+    Break --> Complete: stop
+    Complete --> Ready: new session
+    Complete --> [*]
+```
+
+**How to read it:** goPanda intentionally has a tiny state machine. A session is either ready, focused, on a break, or complete; the product stays out of the user's way.
+
 ## What It Does
 
 - ⏱️ **Pomodoro-focused workflow** for timed work and breaks.
@@ -55,22 +71,10 @@ npm run dev
 
 The Vite development server uses port `3000`.
 
-Production web build:
-
 ```bash
 npm run build
 npm run preview
-```
-
-Desktop build:
-
-```bash
 npm run tauri:build
-```
-
-Type-check:
-
-```bash
 npm run lint
 ```
 
