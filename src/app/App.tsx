@@ -37,7 +37,6 @@ import { StickyNotes } from '../components/notes/StickyNotes';
 import { MiniWidget } from '../components/widget/MiniWidget';
 import { SettingsModal } from '../components/settings/SettingsModal';
 import { DownloadModal } from '../components/landing/DownloadModal';
-import { DotCompanyLogo } from '../components/branding/DotCompanyLogo';
 import { LandingPage } from '../components/landing/LandingPage';
 import { playBambooClick, playChime, playTaskCheer } from '../utils/audio';
 import { formatTime } from '../utils/time';
