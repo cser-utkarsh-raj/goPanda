@@ -14,15 +14,21 @@
       {
         "title": "goPanda - Focus Timer & Productivity Studio",
         "label": "main",
-        "width": 1200,
-        "height": 800,
-        "minWidth": 840,
-        "minHeight": 580,
-        "resizable": true,
-        "transparent": false,
-        "decorations": true,
-        "center": true,
-        "shadow": true
+        "width": 180,
+        "height": 180,
+        "minWidth": 180,
+        "minHeight": 180,
+        "maxWidth": 180,
+        "maxHeight": 180,
+        "resizable": false,
+        "transparent": true,
+        "decorations": false,
+        "center": false,
+        "alwaysOnTop": true,
+        "skipTaskbar": true,
+        "shadow": false,
+        "visible": true,
+        "noRedirectionBitmap": true
       }
     ],
     "security": {
