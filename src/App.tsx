@@ -1,6 +1,6 @@
 /**
  * @license
- * SPDX-License-Identifier: Apache-2.0
+ * SPDX-License-Identifier: MIT
  */
 
 import { useState, useEffect, useRef, useCallback } from 'react';
@@ -167,7 +167,7 @@ export default function App() {
     if (isDesktopApp()) return 'app';
     return window.location.hash === '#app' ? 'app' : 'home';
   });
-  const [viewMode, setViewMode] = useState<'full' | 'mini' | 'zen' | 'widget'>('full');
+  const [viewMode, setViewMode] = useState<'full' | 'mini' | 'zen' | 'widget'>(() => (isDesktopApp() ? 'widget' : 'full'));
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [mobileTab, setMobileTab] = useState<'timer' | 'tasks' | 'notes'>('timer');
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
@@ -513,6 +513,11 @@ export default function App() {
 
   useEffect(() => {
     let unlisten: (() => void) | undefined;
+
+    if (isDesktopApp()) {
+      desktopSwitchViewMode('widget');
+    }
+
     onDesktopModeChanged((mode) => {
       setViewMode(mode);
     }).then((cleanup) => {
