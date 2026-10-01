@@ -12,8 +12,8 @@ import {
   Sparkles,
   ExternalLink,
 } from 'lucide-react';
-import { PandaLogo } from './PandaLogo';
-import { playBambooClick } from '../utils/audio';
+import { PandaLogo } from '../branding/PandaLogo';
+import { playBambooClick } from '../../utils/audio';
 
 interface DownloadModalProps {
   isOpen: boolean;

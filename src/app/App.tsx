@@ -28,25 +28,25 @@ import {
   SubTask,
   TimerMode,
   TimerSettings,
-} from './types';
-import { PandaMascot } from './components/PandaMascot';
-import { PandaLogo } from './components/PandaLogo';
-import { PomoTimer } from './components/PomoTimer';
-import { SubtaskTracker } from './components/SubtaskTracker';
-import { StickyNotes } from './components/StickyNotes';
-import { MiniWidget } from './components/MiniWidget';
-import { SettingsModal } from './components/SettingsModal';
-import { DownloadModal } from './components/DownloadModal';
-import { DotCompanyLogo } from './components/DotCompanyLogo';
-import { LandingPage } from './components/LandingPage';
-import { playBambooClick, playChime, playTaskCheer } from './utils/audio';
-import { formatTime } from './utils/time';
+} from '../types';
+import { PandaMascot } from '../components/PandaMascot';
+import { PandaLogo } from '../components/PandaLogo';
+import { PomoTimer } from '../components/PomoTimer';
+import { SubtaskTracker } from '../components/SubtaskTracker';
+import { StickyNotes } from '../components/StickyNotes';
+import { MiniWidget } from '../components/MiniWidget';
+import { SettingsModal } from '../components/SettingsModal';
+import { DownloadModal } from '../components/DownloadModal';
+import { DotCompanyLogo } from '../components/DotCompanyLogo';
+import { LandingPage } from '../components/LandingPage';
+import { playBambooClick, playChime, playTaskCheer } from '../utils/audio';
+import { formatTime } from '../utils/time';
 import {
   desktopSwitchViewMode,
   desktopToggleFullScreen,
   isDesktopApp,
   onDesktopModeChanged,
-} from './utils/desktopBridge';
+} from '../utils/desktopBridge';
 
 const DEFAULT_SETTINGS: TimerSettings = {
   workDuration: 25,

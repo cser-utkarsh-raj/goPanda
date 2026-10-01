@@ -1,7 +1,7 @@
 import React from 'react';
 import { X, Volume2, Sliders, ShieldCheck } from 'lucide-react';
-import { TimerSettings } from '../types';
-import { playBambooClick, playChime } from '../utils/audio';
+import { TimerSettings } from '../../types';
+import { playBambooClick, playChime } from '../../utils/audio';
 
 interface SettingsModalProps {
   isOpen: boolean;

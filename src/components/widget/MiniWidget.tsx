@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Pause, Play, SkipForward } from 'lucide-react';
-import { PandaMood, PomodoroPhase, SubTask, TimerMode } from '../types';
-import { PandaLogo } from './PandaLogo';
-import { formatTime } from '../utils/time';
-import { playBambooClick } from '../utils/audio';
+import { PandaMood, PomodoroPhase, SubTask, TimerMode } from '../../types';
+import { PandaLogo } from '../branding/PandaLogo';
+import { formatTime } from '../../utils/time';
+import { playBambooClick } from '../../utils/audio';
 
 interface MiniWidgetProps {
   mode: TimerMode;

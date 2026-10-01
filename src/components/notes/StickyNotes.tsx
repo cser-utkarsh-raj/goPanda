@@ -1,8 +1,8 @@
 import { motion, AnimatePresence } from 'motion/react';
 import React, { useState } from 'react';
 import { Plus, Pin, Trash2, CheckSquare, AlignLeft, Check, Sparkles } from 'lucide-react';
-import { StickyNote, StickyNoteColor } from '../types';
-import { playBambooClick } from '../utils/audio';
+import { StickyNote, StickyNoteColor } from '../../types';
+import { playBambooClick } from '../../utils/audio';
 
 interface StickyNotesProps {
   notes: StickyNote[];

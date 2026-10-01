@@ -17,9 +17,9 @@ import {
   Apple,
   Terminal,
 } from 'lucide-react';
-import { PandaLogo } from './PandaLogo';
-import { PandaMascot } from './PandaMascot';
-import { DotFooter } from './DotFooter';
+import { PandaLogo } from '../branding/PandaLogo';
+import { PandaMascot } from '../branding/PandaMascot';
+import { DotFooter } from '../branding/DotFooter';
 
 interface LandingPageProps {
   onLaunchApp?: () => void;

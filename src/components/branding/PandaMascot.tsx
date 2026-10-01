@@ -1,7 +1,7 @@
 import { motion } from 'motion/react';
 import React, { useState } from 'react';
-import { PandaMood } from '../types';
-import { playBambooClick } from '../utils/audio';
+import { PandaMood } from '../../types';
+import { playBambooClick } from '../../utils/audio';
 
 interface PandaMascotProps {
   mood: PandaMood;

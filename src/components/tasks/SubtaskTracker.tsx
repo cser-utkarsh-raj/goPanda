@@ -1,9 +1,9 @@
 import { motion, AnimatePresence } from 'motion/react';
 import React, { useState } from 'react';
 import { Plus, Check, Play, Pause, Trash2, Edit2, Sparkles, Clock, Target, CheckCircle2 } from 'lucide-react';
-import { SubTask } from '../types';
-import { formatHumanDuration, formatTime, parseDurationInput } from '../utils/time';
-import { playBambooClick, playTaskCheer } from '../utils/audio';
+import { SubTask } from '../../types';
+import { formatHumanDuration, formatTime, parseDurationInput } from '../../utils/time';
+import { playBambooClick, playTaskCheer } from '../../utils/audio';
 
 interface SubtaskTrackerProps {
   tasks: SubTask[];

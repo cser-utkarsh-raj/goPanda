@@ -21,14 +21,14 @@ import {
   Brain,
   Headphones,
 } from 'lucide-react';
-import { PomodoroPhase, SubTask, TimerMode } from '../types';
-import { formatTime } from '../utils/time';
+import { PomodoroPhase, SubTask, TimerMode } from '../../types';
+import { formatTime } from '../../utils/time';
 import {
   playBambooClick,
   startAmbientSound,
   stopAmbientSound,
   AmbientSoundType,
-} from '../utils/audio';
+} from '../../utils/audio';
 
 interface PomoTimerProps {
   mode: TimerMode;
