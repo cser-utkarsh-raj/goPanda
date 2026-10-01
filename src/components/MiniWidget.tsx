@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Pause, Play, SkipForward } from 'lucide-react';
 import { PandaMood, PomodoroPhase, SubTask, TimerMode } from '../types';
@@ -43,6 +43,23 @@ export const MiniWidget: React.FC<MiniWidgetProps> = ({
   onTogglePlayPause,
   onExpand,
 }) => {
+  useEffect(() => {
+    const body = document.body;
+    const previousBackground = body.style.background;
+    const previousBackgroundColor = body.style.backgroundColor;
+    const previousBackgroundImage = body.style.backgroundImage;
+
+    body.style.background = 'transparent';
+    body.style.backgroundColor = 'transparent';
+    body.style.backgroundImage = 'none';
+
+    return () => {
+      body.style.background = previousBackground;
+      body.style.backgroundColor = previousBackgroundColor;
+      body.style.backgroundImage = previousBackgroundImage;
+    };
+  }, []);
+
   const displayTime =
     mode === 'stopwatch'
       ? formatTime(stopwatchElapsedSeconds)
