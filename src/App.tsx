@@ -568,7 +568,8 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-between p-3 sm:p-5 md:p-6" id="pomo-panda-app">
+    <>
+      <div className="min-h-screen flex flex-col items-center justify-between p-3 sm:p-5 md:p-6" id="pomo-panda-app">
       {/* Top Navigation Header */}
       <header className="w-full max-w-7xl flex items-center justify-between bg-white px-4 sm:px-5 py-3 rounded-[24px] border-2 border-black shadow-[4px_4px_0px_0px_#000] mb-4">
         {/* Brand Logo & Name */}
