@@ -6,10 +6,10 @@ fn switch_view_mode(app: AppHandle, mode: String) -> Result<(), String> {
         if mode == "widget" {
             if let Ok(Some(monitor)) = window.primary_monitor() {
                 let screen_size = monitor.size();
-                let widget_w = 170u32;
-                let widget_h = 190u32;
-                let x = screen_size.width.saturating_sub(widget_w + 30);
-                let y = screen_size.height.saturating_sub(widget_h + 60);
+                let widget_w = 180u32;
+                let widget_h = 180u32;
+                let x = screen_size.width.saturating_sub(widget_w + 24);
+                let y = screen_size.height.saturating_sub(widget_h + 48);
 
                 let _ = window.set_decorations(false);
                 let _ = window.set_resizable(false);
