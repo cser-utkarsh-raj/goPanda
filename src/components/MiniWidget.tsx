@@ -95,14 +95,14 @@ export const MiniWidget: React.FC<MiniWidgetProps> = ({
         onClick={handleClick}
         onDoubleClick={handleDoubleClick}
         className="group relative rounded-full outline-none cursor-pointer"
-        aria-label={\`goPanda ${displayTime}. Double click to open the full app.\`}
+        aria-label={`goPanda ${displayTime}. Double click to open the full app.`}
       >
         <span
-          className={\`absolute inset-0 rounded-full transition-all duration-300 ${
+          className={`absolute inset-0 rounded-full transition-all duration-300 ${
             isRunning
               ? 'shadow-[0_8px_28px_rgba(34,197,94,0.28)]'
               : 'shadow-[0_6px_22px_rgba(0,0,0,0.20)]'
-          }\`}
+          }`}
         />
 
         <svg
@@ -172,9 +172,9 @@ export const MiniWidget: React.FC<MiniWidgetProps> = ({
         </motion.span>
 
         <span
-          className={\`absolute top-[9%] right-[9%] w-2.5 h-2.5 rounded-full border-2 border-white ${
+          className={`absolute top-[9%] right-[9%] w-2.5 h-2.5 rounded-full border-2 border-white ${
             isRunning ? 'bg-emerald-400 animate-pulse' : 'bg-stone-300'
-          }\`}
+          }`}
         />
 
         <motion.span
