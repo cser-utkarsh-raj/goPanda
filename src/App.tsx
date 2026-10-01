@@ -38,6 +38,7 @@ import { MiniWidget } from './components/MiniWidget';
 import { SettingsModal } from './components/SettingsModal';
 import { DownloadModal } from './components/DownloadModal';
 import { DotCompanyLogo } from './components/DotCompanyLogo';
+import { DotFooter } from './components/DotFooter';
 import { LandingPage } from './components/LandingPage';
 import { playBambooClick, playChime, playTaskCheer } from './utils/audio';
 import { formatTime } from './utils/time';
@@ -167,7 +168,7 @@ export default function App() {
     if (isDesktopApp()) return 'app';
     return window.location.hash === '#app' ? 'app' : 'home';
   });
-  const [viewMode, setViewMode] = useState<'full' | 'mini' | 'zen' | 'widget'>(() => (isDesktopApp() ? 'widget' : 'full'));
+  const [viewMode, setViewMode] = useState<'full' | 'mini' | 'zen' | 'widget'>('full');
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [mobileTab, setMobileTab] = useState<'timer' | 'tasks' | 'notes'>('timer');
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
@@ -515,7 +516,8 @@ export default function App() {
     let unlisten: (() => void) | undefined;
 
     if (isDesktopApp()) {
-      desktopSwitchViewMode('widget');
+      desktopSwitchViewMode('full');
+      setViewMode('full');
     }
 
     onDesktopModeChanged((mode) => {
@@ -557,7 +559,12 @@ export default function App() {
 
   // Dedicated Homepage / Showcase Landing (Public web view with all feature highlights & downloads)
   if (currentScreen === 'home') {
-    return <LandingPage onLaunchApp={() => setCurrentScreen('app')} />;
+    return (
+      <>
+        <LandingPage onLaunchApp={() => setCurrentScreen('app')} />
+        <DotFooter />
+      </>
+    );
   }
 
   return (
@@ -1042,5 +1049,7 @@ export default function App() {
         }}
       />
     </div>
+    <DotFooter />
+    </>
   );
 }
