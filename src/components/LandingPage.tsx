@@ -548,9 +548,6 @@ export function LandingPage({ onLaunchApp }: LandingPageProps) {
             <div>
               <div className="flex items-center gap-2 font-black text-base text-white">
                 <span>goPanda</span>
-                <span className="text-teal-400 font-bold text-xs bg-teal-950 px-2 py-0.5 rounded border border-teal-800">
-                  by .dot
-                </span>
               </div>
               <div className="text-stone-400 text-xs mt-0.5 font-medium">
                 Crafted for Deep Focus & Habit Building
@@ -559,7 +556,7 @@ export function LandingPage({ onLaunchApp }: LandingPageProps) {
           </div>
 
           <div className="text-stone-400 font-medium text-xs sm:text-right">
-            <div>© {new Date().getFullYear()} .dot. All rights reserved.</div>
+            <div>© {new Date().getFullYear()} All rights reserved.</div>
             <div className="text-stone-500 text-[11px] mt-0.5">Ultra-Lightweight Desktop Productivity Engine</div>
           </div>
         </div>
