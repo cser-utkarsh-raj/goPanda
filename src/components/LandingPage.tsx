@@ -19,7 +19,6 @@ import {
 } from 'lucide-react';
 import { PandaLogo } from './PandaLogo';
 import { PandaMascot } from './PandaMascot';
-import { DotCompanyLogo } from './DotCompanyLogo';
 
 interface LandingPageProps {
   onLaunchApp?: () => void;
@@ -292,7 +291,7 @@ export function LandingPage({ onLaunchApp }: LandingPageProps) {
               Features You'll Actually Use Every Day
             </h2>
             <p className="text-xs sm:text-sm text-stone-600 max-w-lg mx-auto font-medium">
-              No endless settings or distractions. Pure, refined productivity tools built by .dot.
+              No endless settings or distractions. Pure, refined productivity tools built for focused work.
             </p>
           </div>
 
@@ -374,7 +373,7 @@ export function LandingPage({ onLaunchApp }: LandingPageProps) {
               Engineered for Pure Performance
             </h2>
             <p className="text-xs sm:text-sm text-stone-600 font-medium">
-              Why goPanda by .dot is built with native WebView2 instead of bloated Electron wrappers.
+              Why goPanda is built with native WebView2 instead of bloated Electron wrappers.
             </p>
           </div>
 
@@ -542,9 +541,6 @@ export function LandingPage({ onLaunchApp }: LandingPageProps) {
       <footer className="border-t-3 border-black bg-stone-950 text-white py-12 px-4 sm:px-8 text-center text-xs">
         <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-3 text-left">
-            <div className="w-12 h-12 bg-white rounded-2xl border-2 border-stone-800 flex items-center justify-center shrink-0">
-              <DotCompanyLogo size={36} variant="badge" />
-            </div>
             <div>
               <div className="flex items-center gap-2 font-black text-base text-white">
                 <span>goPanda</span>
