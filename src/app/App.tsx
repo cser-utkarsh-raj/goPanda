@@ -38,6 +38,7 @@ import { MiniWidget } from '../components/widget/MiniWidget';
 import { SettingsModal } from '../components/settings/SettingsModal';
 import { DownloadModal } from '../components/landing/DownloadModal';
 import { LandingPage } from '../components/landing/LandingPage';
+import { DotFooter } from '../components/branding/DotFooter';
 import { playBambooClick, playChime, playTaskCheer } from '../utils/audio';
 import { formatTime } from '../utils/time';
 import {
@@ -45,7 +46,7 @@ import {
   desktopToggleFullScreen,
   isDesktopApp,
   onDesktopModeChanged,
-} from '../utils/desktopBridge';
+} from '../services/desktopBridge';
 
 const DEFAULT_SETTINGS: TimerSettings = {
   workDuration: 25,
