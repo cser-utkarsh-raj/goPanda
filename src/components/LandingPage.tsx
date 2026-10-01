@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { PandaLogo } from './PandaLogo';
 import { PandaMascot } from './PandaMascot';
+import { DotFooter } from './DotFooter';
 
 interface LandingPageProps {
   onLaunchApp?: () => void;
@@ -550,6 +551,7 @@ export function LandingPage({ onLaunchApp }: LandingPageProps) {
             <div className="text-stone-500 text-[11px] mt-0.5">Ultra-Lightweight Desktop Productivity Engine</div>
           </div>
         </div>
+        <DotFooter />
       </footer>
     </div>
   );
