@@ -38,7 +38,6 @@ import { MiniWidget } from './components/MiniWidget';
 import { SettingsModal } from './components/SettingsModal';
 import { DownloadModal } from './components/DownloadModal';
 import { DotCompanyLogo } from './components/DotCompanyLogo';
-import { DotFooter } from './components/DotFooter';
 import { LandingPage } from './components/LandingPage';
 import { playBambooClick, playChime, playTaskCheer } from './utils/audio';
 import { formatTime } from './utils/time';
@@ -562,7 +561,6 @@ export default function App() {
     return (
       <>
         <LandingPage onLaunchApp={() => setCurrentScreen('app')} />
-        <DotFooter />
       </>
     );
   }
