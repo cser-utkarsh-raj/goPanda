@@ -29,16 +29,16 @@ import {
   TimerMode,
   TimerSettings,
 } from '../types';
-import { PandaMascot } from '../components/PandaMascot';
-import { PandaLogo } from '../components/PandaLogo';
-import { PomoTimer } from '../components/PomoTimer';
-import { SubtaskTracker } from '../components/SubtaskTracker';
-import { StickyNotes } from '../components/StickyNotes';
-import { MiniWidget } from '../components/MiniWidget';
-import { SettingsModal } from '../components/SettingsModal';
-import { DownloadModal } from '../components/DownloadModal';
-import { DotCompanyLogo } from '../components/DotCompanyLogo';
-import { LandingPage } from '../components/LandingPage';
+import { PandaMascot } from '../components/branding/PandaMascot';
+import { PandaLogo } from '../components/branding/PandaLogo';
+import { PomoTimer } from '../components/timer/PomoTimer';
+import { SubtaskTracker } from '../components/tasks/SubtaskTracker';
+import { StickyNotes } from '../components/notes/StickyNotes';
+import { MiniWidget } from '../components/widget/MiniWidget';
+import { SettingsModal } from '../components/settings/SettingsModal';
+import { DownloadModal } from '../components/landing/DownloadModal';
+import { DotCompanyLogo } from '../components/branding/DotCompanyLogo';
+import { LandingPage } from '../components/landing/LandingPage';
 import { playBambooClick, playChime, playTaskCheer } from '../utils/audio';
 import { formatTime } from '../utils/time';
 import {
