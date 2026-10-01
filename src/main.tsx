@@ -1,7 +1,6 @@
 import {StrictMode} from 'react';
 import {createRoot} from 'react-dom/client';
 import App from './App.tsx';
-import { DotFooter } from './components/DotFooter';
 import './index.css';
 
 // Register Service Worker for offline capability & auto-updates on new pushes
@@ -31,7 +30,6 @@ createRoot(document.getElementById('root')!).render(
       <div className="flex-1 min-h-0">
         <App />
       </div>
-      <DotFooter />
     </div>
   </StrictMode>,
 );
