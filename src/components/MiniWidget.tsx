@@ -44,19 +44,48 @@ export const MiniWidget: React.FC<MiniWidgetProps> = ({
   onExpand,
 }) => {
   useEffect(() => {
+    const html = document.documentElement;
     const body = document.body;
-    const previousBackground = body.style.background;
-    const previousBackgroundColor = body.style.backgroundColor;
-    const previousBackgroundImage = body.style.backgroundImage;
+    const root = document.getElementById('root');
 
+    const previous = {
+      htmlBackground: html.style.background,
+      htmlBackgroundColor: html.style.backgroundColor,
+      bodyBackground: body.style.background,
+      bodyBackgroundColor: body.style.backgroundColor,
+      bodyBackgroundImage: body.style.backgroundImage,
+      bodyMinHeight: body.style.minHeight,
+      rootBackground: root?.style.background ?? '',
+      rootBackgroundColor: root?.style.backgroundColor ?? '',
+      rootMinHeight: root?.style.minHeight ?? '',
+    };
+
+    html.style.background = 'transparent';
+    html.style.backgroundColor = 'transparent';
     body.style.background = 'transparent';
     body.style.backgroundColor = 'transparent';
     body.style.backgroundImage = 'none';
+    body.style.minHeight = '0';
+
+    if (root) {
+      root.style.background = 'transparent';
+      root.style.backgroundColor = 'transparent';
+      root.style.minHeight = '0';
+    }
 
     return () => {
-      body.style.background = previousBackground;
-      body.style.backgroundColor = previousBackgroundColor;
-      body.style.backgroundImage = previousBackgroundImage;
+      html.style.background = previous.htmlBackground;
+      html.style.backgroundColor = previous.htmlBackgroundColor;
+      body.style.background = previous.bodyBackground;
+      body.style.backgroundColor = previous.bodyBackgroundColor;
+      body.style.backgroundImage = previous.bodyBackgroundImage;
+      body.style.minHeight = previous.bodyMinHeight;
+
+      if (root) {
+        root.style.background = previous.rootBackground;
+        root.style.backgroundColor = previous.rootBackgroundColor;
+        root.style.minHeight = previous.rootMinHeight;
+      }
     };
   }, []);
 
@@ -99,7 +128,7 @@ export const MiniWidget: React.FC<MiniWidgetProps> = ({
 
   return (
     <div
-      className="w-full h-full flex items-center justify-center select-none"
+      className="w-full h-full flex items-center justify-center select-none bg-transparent"
       id="gopanda-desktop-widget"
       title="Single click to pause/resume · Double click to open goPanda"
     >
