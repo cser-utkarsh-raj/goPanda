@@ -71,10 +71,6 @@ export function LandingPage({ onLaunchApp }: LandingPageProps) {
             <div>
               <div className="flex items-center gap-2">
                 <span className="font-black text-xl tracking-tight text-stone-950">goPanda</span>
-                <div className="flex items-center gap-1.5 px-2 py-0.5 bg-[#CCFBF1] border border-black rounded-lg text-[11px] font-black text-teal-950 shadow-[1px_1px_0px_0px_#000]">
-                  <DotCompanyLogo size={14} variant="icon" />
-                  <span>.dot</span>
-                </div>
               </div>
             </div>
           </div>
