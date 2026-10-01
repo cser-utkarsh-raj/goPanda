@@ -111,8 +111,7 @@ export function LandingPage({ onLaunchApp }: LandingPageProps) {
             animate={{ opacity: 1, y: 0 }}
             className="inline-flex items-center gap-2 px-4 py-1.5 bg-[#FEF08A] border-2 border-black rounded-full text-xs font-black shadow-[2px_2px_0px_0px_#000]"
           >
-            <DotCompanyLogo size={16} variant="icon" />
-            <span>Built with Care by .dot for Focused Students & Creators</span>
+            <span>Built for Focused Students & Creators</span>
           </motion.div>
 
           <motion.h1
@@ -190,8 +189,7 @@ export function LandingPage({ onLaunchApp }: LandingPageProps) {
                   <span className="text-xs font-black text-stone-900 ml-2">goPanda Workspace Preview</span>
                 </div>
                 <div className="flex items-center gap-1.5 text-[11px] font-black text-teal-900 bg-teal-100 px-2.5 py-0.5 rounded-full border border-black">
-                  <DotCompanyLogo size={13} variant="icon" />
-                  <span>.dot Edition</span>
+                  <span>goPanda Edition</span>
                 </div>
               </div>
 
