@@ -1,6 +1,6 @@
 # 🐼 goPanda
 
-> **A cute, lightweight Pomodoro timer and productivity companion.**
+> **A tiny desktop focus companion that lives beside your work.**
 
 `goPanda` is a small productivity app built around one job: **help you start focused work without turning productivity into another complicated system.**
 
@@ -25,11 +25,11 @@ stateDiagram-v2
 ## What It Does
 
 - ⏱️ **Pomodoro-focused workflow** for timed work and breaks.
-- 🐼 **Friendly companion experience** designed to make starting a session feel approachable.
-- 🖥️ **Desktop-capable application** with Tauri support alongside the browser experience.
-- ⚡ **Fast local-first interaction** with a deliberately lightweight UI.
-- ✨ **Motion and micro-interactions** without sacrificing the utility of the timer.
-- 🤖 **AI-ready architecture** using the Google GenAI SDK where intelligent features are introduced.
+- 🐼 **Floating panda companion** with a circular timer progress meter.
+- 🖱️ **Hover to expand** the panda and reveal the live remaining time.
+- 🖱️🖱️ **Double-click the panda** to open the full goPanda workspace.
+- 🖥️ **Transparent always-on-top desktop widget** powered by Tauri.
+- ⚡ **Local-first interaction** with the timer, tasks and notes kept on the device.
 
 The product is intentionally smaller than .dot's flagship platforms. **goPanda is a tool, not a platform.**
 
@@ -57,8 +57,7 @@ No complicated productivity methodology is required. The goal is to provide a pl
 | Motion | Motion |
 | Icons | Lucide React |
 | Desktop | Tauri 2 |
-| Server/runtime utilities | Node.js / Express |
-| AI integration | Google GenAI SDK |
+| Runtime | Browser + Tauri 2 desktop |
 
 ## 🚀 Run Locally
 
@@ -91,3 +90,18 @@ That constraint is part of the product identity.
 > **goPanda · Focus, one block at a time.**
 >
 > **Presented by .dot**
+
+
+## 🐼 Desktop Widget
+
+When running as a desktop app, goPanda starts as a small floating panda instead of a mini dashboard.
+
+- **Idle:** panda logo + circular session progress
+- **Hover:** panda smoothly grows and reveals the remaining time
+- **Single click:** start / pause
+- **Double click:** open the full goPanda workspace
+- The widget stays above other windows while the full workspace is opened only when requested.
+
+## License
+
+goPanda is open source software licensed under the [MIT License](LICENSE).
