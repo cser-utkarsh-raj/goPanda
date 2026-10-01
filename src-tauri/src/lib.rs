@@ -13,9 +13,13 @@ fn switch_view_mode(app: AppHandle, mode: String) -> Result<(), String> {
 
                 let _ = window.set_decorations(false);
                 let _ = window.set_resizable(false);
+                let _ = window.set_min_size(PhysicalSize::new(widget_w, widget_h));
+                let _ = window.set_max_size(PhysicalSize::new(widget_w, widget_h));
                 let _ = window.set_size(PhysicalSize::new(widget_w, widget_h));
                 let _ = window.set_position(PhysicalPosition::new(x as i32, y as i32));
                 let _ = window.set_always_on_top(true);
+                let _ = window.set_skip_taskbar(true);
+                let _ = window.set_shadow(false);
             }
             let _ = window.emit("mode-changed", "widget");
         } else {
@@ -27,7 +31,11 @@ fn switch_view_mode(app: AppHandle, mode: String) -> Result<(), String> {
                 let _ = window.set_decorations(true);
                 let _ = window.set_always_on_top(false);
                 let _ = window.set_resizable(true);
+                let _ = window.set_min_size(PhysicalSize::new(900u32, 650u32));
+                let _ = window.set_max_size(None::<PhysicalSize<u32>>);
                 let _ = window.set_size(PhysicalSize::new(full_w, full_h));
+                let _ = window.set_skip_taskbar(false);
+                let _ = window.set_shadow(true);
                 let _ = window.center();
             }
             let _ = window.emit("mode-changed", "full");
