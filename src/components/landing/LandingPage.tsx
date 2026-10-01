@@ -532,27 +532,7 @@ export function LandingPage({ onLaunchApp }: LandingPageProps) {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t-3 border-black bg-stone-950 text-white py-12 px-4 sm:px-8 text-center text-xs">
-        <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-3 text-left">
-            <div>
-              <div className="flex items-center gap-2 font-black text-base text-white">
-                <span>goPanda</span>
-              </div>
-              <div className="text-stone-400 text-xs mt-0.5 font-medium">
-                Crafted for Deep Focus & Habit Building
-              </div>
-            </div>
-          </div>
-
-          <div className="text-stone-400 font-medium text-xs sm:text-right">
-            <div>© {new Date().getFullYear()} All rights reserved.</div>
-            <div className="text-stone-500 text-[11px] mt-0.5">Ultra-Lightweight Desktop Productivity Engine</div>
-          </div>
-        </div>
-        <DotFooter />
-      </footer>
+      <DotFooter />
     </div>
   );
 }
