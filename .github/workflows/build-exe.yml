@@ -49,6 +49,9 @@ jobs:
       - name: Install Frontend Dependencies
         run: npm install
 
+      - name: Generate Desktop Icons
+        run: npx tauri icon public/icon.svg
+
       - name: Build Desktop Apps
         uses: tauri-apps/tauri-action@v0.6.2
         env:
