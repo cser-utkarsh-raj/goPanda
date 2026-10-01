@@ -581,10 +581,6 @@ export default function App() {
                 <h1 className="font-black text-stone-950 tracking-tight text-base sm:text-lg leading-tight">
                   goPanda
                 </h1>
-                <div className="flex items-center gap-1.5 px-2 py-0.5 bg-[#CCFBF1] border border-black text-teal-950 text-[10px] font-black rounded-md shadow-[1px_1px_0px_0px_#000]">
-                  <DotCompanyLogo size={12} variant="icon" />
-                  <span>.dot</span>
-                </div>
               </div>
             </div>
           </button>
