@@ -1000,30 +1000,8 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      {/* Footer Info Bar */}
-      <footer className="w-full max-w-7xl mt-4 pt-3 border-t-2 border-black/10 flex flex-col sm:flex-row items-center justify-between text-xs text-stone-600 font-bold gap-2">
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-1.5 text-stone-900">
-            <PandaLogo size={18} />
-            <span><strong>goPanda</strong> <span className="text-teal-700 font-bold text-[11px]">by .dot</span></span>
-          </div>
-          <span>•</span>
-          <span className="hidden sm:inline">Shortcuts: <strong>Space</strong> (play/pause), <strong>R</strong> (reset), <strong>S</strong> (skip)</span>
-        </div>
-        <div className="flex items-center gap-3">
-          {!isDesktopApp() ? (
-            <button
-              onClick={() => setCurrentScreen('home')}
-              className="text-stone-900 underline hover:text-emerald-700 transition-colors"
-            >
-              Feature Showcase & Downloads
-            </button>
-          ) : (
-            <span className="text-stone-500 font-medium">Native Desktop Mode</span>
-          )}
-          <span className="inline-block w-2 h-2 rounded-full bg-emerald-500 border border-black" title="Local Persistence Active" />
-        </div>
-      </footer>
+      {/* Shared .dot product footer */}
+      <DotFooter />
 
       {/* Download & GitHub Deploy Modal */}
       <DownloadModal
