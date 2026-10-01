@@ -57,12 +57,12 @@ jobs:
           tagName: app-v__VERSION__
           releaseName: 'goPanda Native Desktop v__VERSION__'
           releaseBody: |
-            ## 🎋 goPanda Native Desktop Apps
-            - **Windows**: `goPanda-Setup.exe` (NSIS Installer)
-            - **macOS**: `goPanda.dmg` (Universal Disk Image)
-            - **Linux**: `goPanda.AppImage` & `goPanda.deb`
-            - **Performance**: Native system WebView engine with minimal memory footprint and instant launch!
-            - **Overlay**: Floating circle stays on top of YouTube, PDF readers, and code editors.
+            ## goPanda Native Desktop Apps
+            - Windows: goPanda-Setup.exe (NSIS Installer)
+            - macOS: goPanda.dmg (Universal Disk Image)
+            - Linux: goPanda.AppImage and goPanda.deb
+            - Native system WebView engine with a minimal memory footprint.
+            - Floating widget stays on top of other apps.
           releaseDraft: false
           prerelease: false
           tauriScript: npm run tauri
@@ -86,12 +86,14 @@ jobs:
           fi
           ls -la release-assets
 
-      - name: Publish & Overwrite Release Assets
+      - name: Publish Clean Release Aliases
+        if: ${{ hashFiles('release-assets/*') != '' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         shell: bash
         run: |
-          gh release upload latest release-assets/* --clobber --repo ${{ github.repository }} || true
+          VERSION=$(node -e "console.log(JSON.parse(require('fs').readFileSync('src-tauri/tauri.conf.json','utf8')).version)")
+          gh release upload "app-v$VERSION" release-assets/* --clobber --repo ${{ github.repository }}
 
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4

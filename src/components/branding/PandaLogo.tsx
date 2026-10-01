@@ -5,93 +5,48 @@ interface PandaLogoProps {
   className?: string;
 }
 
-export const PandaLogo: React.FC<PandaLogoProps> = ({ size = 36, className = '' }) => {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 48 48"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className={className}
-      id="panda-logo-graphic"
-    >
-      {/* Left Ear */}
-      <circle cx="12" cy="12" r="7" fill="#1C1917" stroke="#000000" strokeWidth="2.5" />
-      <circle cx="12" cy="12" r="3.5" fill="#44403C" />
+/**
+ * Compact goPanda brand mark shared by the app header, widget and web shell.
+ */
+export const PandaLogo: React.FC<PandaLogoProps> = ({ size = 36, className = '' }) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 512 512"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    className={className}
+    id="panda-logo-graphic"
+    role="img"
+    aria-label="goPanda"
+  >
+    <rect x="28" y="28" width="456" height="456" rx="128" fill="#4ADE80" stroke="#171717" strokeWidth="20" />
+    <rect x="48" y="48" width="416" height="416" rx="112" fill="#ECFDF5" />
 
-      {/* Right Ear */}
-      <circle cx="36" cy="12" r="7" fill="#1C1917" stroke="#000000" strokeWidth="2.5" />
-      <circle cx="36" cy="12" r="3.5" fill="#44403C" />
+    <circle cx="164" cy="170" r="66" fill="#171717" />
+    <circle cx="348" cy="170" r="66" fill="#171717" />
+    <circle cx="164" cy="170" r="28" fill="#44403C" opacity="0.8" />
+    <circle cx="348" cy="170" r="28" fill="#44403C" opacity="0.8" />
 
-      {/* Bamboo Leaf on ear */}
-      <path
-        d="M37 6 C42 4, 46 8, 44 13 C40 12, 38 9, 37 6 Z"
-        fill="#4ADE80"
-        stroke="#000000"
-        strokeWidth="1.5"
-      />
+    <path d="M256 126 C174 126 112 185 112 274 C112 367 175 420 256 420 C337 420 400 367 400 274 C400 185 338 126 256 126Z" fill="#FFFFFF" stroke="#171717" strokeWidth="18" />
 
-      {/* Main Head Base */}
-      <rect
-        x="6"
-        y="9"
-        width="36"
-        height="34"
-        rx="17"
-        fill="#FFFFFF"
-        stroke="#000000"
-        strokeWidth="2.5"
-      />
+    <ellipse cx="190" cy="255" rx="48" ry="60" transform="rotate(-15 190 255)" fill="#171717" />
+    <ellipse cx="322" cy="255" rx="48" ry="60" transform="rotate(15 322 255)" fill="#171717" />
 
-      {/* Left Eye Black Patch */}
-      <ellipse
-        cx="16"
-        cy="23"
-        rx="5.5"
-        ry="6.5"
-        transform="rotate(-15 16 23)"
-        fill="#1C1917"
-        stroke="#000000"
-        strokeWidth="1"
-      />
-      {/* Left Eye Sparkle */}
-      <circle cx="15" cy="21.5" r="2.2" fill="#FFFFFF" />
-      <circle cx="17.5" cy="24.5" r="1" fill="#FFFFFF" />
+    <circle cx="194" cy="258" r="20" fill="#FFFFFF" />
+    <circle cx="318" cy="258" r="20" fill="#FFFFFF" />
+    <circle cx="197" cy="261" r="10" fill="#171717" />
+    <circle cx="315" cy="261" r="10" fill="#171717" />
+    <circle cx="201" cy="255" r="4.5" fill="#FFFFFF" />
+    <circle cx="319" cy="255" r="4.5" fill="#FFFFFF" />
 
-      {/* Right Eye Black Patch */}
-      <ellipse
-        cx="32"
-        cy="23"
-        rx="5.5"
-        ry="6.5"
-        transform="rotate(15 32 23)"
-        fill="#1C1917"
-        stroke="#000000"
-        strokeWidth="1"
-      />
-      {/* Right Eye Sparkle */}
-      <circle cx="31" cy="21.5" r="2.2" fill="#FFFFFF" />
-      <circle cx="33.5" cy="24.5" r="1" fill="#FFFFFF" />
+    <ellipse cx="153" cy="324" rx="27" ry="14" fill="#FDA4AF" opacity="0.82" />
+    <ellipse cx="359" cy="324" rx="27" ry="14" fill="#FDA4AF" opacity="0.82" />
 
-      {/* Pink Rosy Cheeks */}
-      <ellipse cx="11" cy="31" rx="3.5" ry="2.2" fill="#FDA4AF" opacity="0.9" />
-      <ellipse cx="37" cy="31" rx="3.5" ry="2.2" fill="#FDA4AF" opacity="0.9" />
+    <path d="M238 296 Q256 282 274 296 Q268 313 256 318 Q244 313 238 296Z" fill="#171717" />
+    <path d="M238 328 Q247 340 256 330 Q265 340 274 328" fill="none" stroke="#171717" strokeWidth="9" strokeLinecap="round" strokeLinejoin="round" />
 
-      {/* Cute Little Panda Nose */}
-      <path
-        d="M21.5 28 C21.5 27, 26.5 27, 26.5 28 C26.5 30, 24 31.5, 24 31.5 C24 31.5, 21.5 30, 21.5 28 Z"
-        fill="#1C1917"
-      />
-
-      {/* W-Shaped Kawaii Mouth */}
-      <path
-        d="M20.5 33 Q22.2 35.5 24 33.2 Q25.8 35.5 27.5 33"
-        stroke="#000000"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-};
+    <path d="M356 112 Q403 86 410 132 Q384 137 356 112Z" fill="#10B981" stroke="#171717" strokeWidth="9" />
+    <path d="M367 116 Q385 115 401 126" fill="none" stroke="#047857" strokeWidth="5" strokeLinecap="round" />
+  </svg>
+);

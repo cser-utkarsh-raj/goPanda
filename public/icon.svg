@@ -1,41 +1,23 @@
-<svg viewBox="0 0 512 512" width="512" height="512" xmlns="http://www.w3.org/2000/svg">
-  <!-- Background Badge -->
-  <rect x="32" y="32" width="448" height="448" rx="112" fill="#10B981" stroke="#09090B" stroke-width="24" stroke-linejoin="round"/>
-  <rect x="64" y="64" width="384" height="384" rx="92" fill="#ECFDF5" stroke="#09090B" stroke-width="18" stroke-linejoin="round"/>
-
-  <!-- Bamboo Leaf Accents -->
-  <path d="M 120 120 Q 160 80 200 120 Q 160 160 120 120 Z" fill="#059669" stroke="#09090B" stroke-width="12" stroke-linejoin="round"/>
-  <path d="M 392 120 Q 352 80 312 120 Q 352 160 392 120 Z" fill="#059669" stroke="#09090B" stroke-width="12" stroke-linejoin="round"/>
-
-  <!-- Cute Panda Ears -->
-  <circle cx="170" cy="180" r="64" fill="#09090B" stroke="#09090B" stroke-width="8"/>
-  <circle cx="342" cy="180" r="64" fill="#09090B" stroke="#09090B" stroke-width="8"/>
-  <circle cx="170" cy="180" r="28" fill="#F472B6"/>
-  <circle cx="342" cy="180" r="28" fill="#F472B6"/>
-
-  <!-- Panda Head (White Circle) -->
-  <circle cx="256" cy="270" r="130" fill="#FFFFFF" stroke="#09090B" stroke-width="18"/>
-
-  <!-- Panda Eye Patches (Black/Dark Charcoal) -->
-  <g transform="rotate(-15 200 250)">
-    <ellipse cx="200" cy="250" rx="42" ry="52" fill="#09090B"/>
-    <circle cx="205" cy="240" r="12" fill="#FFFFFF"/>
-    <circle cx="192" cy="262" r="5" fill="#FFFFFF"/>
-  </g>
-  <g transform="rotate(15 312 250)">
-    <ellipse cx="312" cy="250" rx="42" ry="52" fill="#09090B"/>
-    <circle cx="307" cy="240" r="12" fill="#FFFFFF"/>
-    <circle cx="320" cy="262" r="5" fill="#FFFFFF"/>
-  </g>
-
-  <!-- Cute Panda Nose & Smile -->
-  <path d="M 240 285 Q 256 272 272 285 Q 264 300 256 302 Q 248 300 240 285 Z" fill="#09090B"/>
-  <path d="M 230 318 Q 256 340 282 318" fill="none" stroke="#09090B" stroke-width="12" stroke-linecap="round"/>
-
-  <!-- Cute Rosy Cheeks -->
-  <ellipse cx="176" cy="305" rx="18" ry="10" fill="#FCA5A5" opacity="0.8"/>
-  <ellipse cx="336" cy="305" rx="18" ry="10" fill="#FCA5A5" opacity="0.8"/>
-
-  <!-- Bamboo Leaf in Mouth / Forehead Accent -->
-  <path d="M 240 370 Q 256 390 272 370 Q 260 350 240 370 Z" fill="#10B981" stroke="#09090B" stroke-width="8"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect x="28" y="28" width="456" height="456" rx="128" fill="#4ADE80" stroke="#171717" stroke-width="20"/>
+  <rect x="48" y="48" width="416" height="416" rx="112" fill="#ECFDF5"/>
+  <circle cx="164" cy="170" r="66" fill="#171717"/>
+  <circle cx="348" cy="170" r="66" fill="#171717"/>
+  <circle cx="164" cy="170" r="28" fill="#44403C" opacity=".8"/>
+  <circle cx="348" cy="170" r="28" fill="#44403C" opacity=".8"/>
+  <path d="M256 126 C174 126 112 185 112 274 C112 367 175 420 256 420 C337 420 400 367 400 274 C400 185 338 126 256 126Z" fill="#FFFFFF" stroke="#171717" stroke-width="18"/>
+  <ellipse cx="190" cy="255" rx="48" ry="60" transform="rotate(-15 190 255)" fill="#171717"/>
+  <ellipse cx="322" cy="255" rx="48" ry="60" transform="rotate(15 322 255)" fill="#171717"/>
+  <circle cx="194" cy="258" r="20" fill="#FFFFFF"/>
+  <circle cx="318" cy="258" r="20" fill="#FFFFFF"/>
+  <circle cx="197" cy="261" r="10" fill="#171717"/>
+  <circle cx="315" cy="261" r="10" fill="#171717"/>
+  <circle cx="201" cy="255" r="4.5" fill="#FFFFFF"/>
+  <circle cx="319" cy="255" r="4.5" fill="#FFFFFF"/>
+  <ellipse cx="153" cy="324" rx="27" ry="14" fill="#FDA4AF" opacity=".82"/>
+  <ellipse cx="359" cy="324" rx="27" ry="14" fill="#FDA4AF" opacity=".82"/>
+  <path d="M238 296 Q256 282 274 296 Q268 313 256 318 Q244 313 238 296Z" fill="#171717"/>
+  <path d="M238 328 Q247 340 256 330 Q265 340 274 328" fill="none" stroke="#171717" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M356 112 Q403 86 410 132 Q384 137 356 112Z" fill="#10B981" stroke="#171717" stroke-width="9"/>
+  <path d="M367 116 Q385 115 401 126" fill="none" stroke="#047857" stroke-width="5" stroke-linecap="round"/>
 </svg>
